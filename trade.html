@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Dashboard - TradersConnect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .trade-page {
+            padding-top: 100px;
+            background-color: #0a0e17;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            font-size: 12px;
+            /* smaller base font for laptop fit */
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: #0f1419;
+            border-bottom: 1px solid #1f2937;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .market-info {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .coin-select {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #e5e7eb;
+            font-weight: 600;
+        }
+
+        .coin-icon {
+            width: 24px;
+            height: 24px;
+            background: #f7931a;
+            border-radius: 50%;
+        }
+
+        .price-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .current-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .price-change {
+            font-size: 0.8rem;
+            color: #10b981;
+        }
+
+        .price-change.negative {
+            color: #ef4444;
+        }
+
+        .market-stats {
+            display: flex;
+            gap: 30px;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.75rem;
+        }
+
+        .stat-value {
+            color: #e5e7eb;
+            font-weight: 600;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            width: 35px;
+            height: 35px;
+            background: #1f2937;
+            border: none;
+            border-radius: 8px;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: #374151;
+            color: #10b981;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Main Layout (flexbox implementation) */
+        .trading-layout {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            background: #0f1419;
+            padding: 0;
+            position: relative;
+            /* allow chart to grow and take remaining horizontal space */
+            flex: 1 1 0;
+            min-width: 360px;
+        }
+
+        /* Responsive chart container: keeps a 16:9 ratio and limits extreme heights */
+        .chart-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            min-height: 220px;
+            max-height: 72vh;
+            overflow: hidden;
+        }
+
+        .chart-container iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border: 0;
+            display: block;
+        }
+
+        /* Order Book */
+        .orderbook-section {
+            background: #0f1419;
+            padding: 8px;
+            /* fixed width column on the right of chart */
+            flex: 0 0 200px;
+            min-width: 180px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            /* slightly smaller */
+            font-weight: 600;
+            color: #9ca3af;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .orderbook-header {
+            display: flex;
+            font-size: 0.7rem;
+            /* slightly smaller */
+            color: #6b7280;
+            margin-bottom: 8px;
+            padding: 0 4px;
+        }
+
+        .orderbook-row {
+            display: flex;
+            font-size: 0.78rem;
+            /* smaller rows */
+            padding: 4px;
+            /* reduced */
+            margin-bottom: 2px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .orderbook-header>span,
+        .orderbook-row>span {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+
+        .orderbook-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .orderbook-row.sell {
+            color: #ef4444;
+        }
+
+        .orderbook-row.buy {
+            color: #10b981;
+        }
+
+        .orderbook-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: currentColor;
+            opacity: 0.1;
+            width: var(--depth, 50%);
+        }
+
+        .current-price-row {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        /* Trading Panel */
+        .trading-panel {
+            background: #0f1419;
+            padding: 12px;
+            /* fixed width trading panel */
+            flex: 0 0 320px;
+            min-width: 240px;
+            overflow-y: auto;
+        }
+
+        .trading-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            background: #1f2937;
+            padding: 4px;
+            /* reduced */
+            border-radius: 8px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px;
+            /* reduced */
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            /* slightly smaller button text */
+        }
+
+        .tab-btn.active {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        .order-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.78rem;
+            /* smaller labels */
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background: #1f2937;
+            border-radius: 8px;
+            border: 1px solid #374151;
+            overflow: hidden;
+        }
+
+        .input-group input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px 10px;
+            /* reduced */
+            color: #e5e7eb;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .input-group-text {
+            background: transparent;
+            padding: 0 10px;
+            color: #6b7280;
+            font-size: 0.78rem;
+        }
+
+        .leverage-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .leverage-btn {
+            flex: 1;
+            padding: 6px;
+            /* reduced */
+            background: #1f2937;
+            border: 1px solid #374151;
+            color: #9ca3af;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.82rem;
+        }
+
+        .leverage-btn.active {
+            background: #10b981;
+            color: #ffffff;
+            border-color: #10b981;
+        }
+
+        .slider-container {
+            padding: 6px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            background: #1f2937;
+            border-radius: 3px;
+            outline: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            /* smaller thumb */
+            height: 14px;
+            background: #10b981;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .order-summary {
+            background: #1f2937;
+            padding: 8px;
+            /* reduced */
+            border-radius: 8px;
+            font-size: 0.82rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .btn-long,
+        .btn-short {
+            width: 100%;
+            padding: 10px;
+            /* reduced */
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-long {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+        }
+
+        .btn-long:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-short {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #ffffff;
+        }
+
+        .btn-short:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Positions Section */
+        .positions-section {
+            background: transparent;
+            padding: 12px 0 0 0;
+            /* full width row below the main flex row */
+            flex-basis: 100%;
+            overflow-x: auto;
+        }
+
+        .positions-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e6e9ee;
+        }
+
+        .position-tab {
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .position-tab.active {
+            color: #10b981;
+            border-bottom-color: #10b981;
+        }
+
+        .positions-table {
+            width: 100%;
+            font-size: 0.85rem;
+        }
+
+        .positions-table thead {
+            color: #6b7280;
+        }
+
+        .positions-table th {
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .positions-table td {
+            padding: 12px 10px;
+        }
+
+        .no-positions {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        /* Responsive: stack main columns vertically on medium and small screens */
+        @media (max-width: 1200px) {
+            .trading-layout {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .chart-section {
+                order: 1;
+                flex: 1 1 auto;
+                width: 100%;
+                /* min-height: 60vh; */
+            }
+
+            .orderbook-section {
+                order: 2;
+                flex: 0 0 auto;
+                width: 100%;
+            }
+
+            .trading-panel {
+                order: 3;
+                flex: 0 0 auto;
+                width: 100%;
+            }
+
+            .positions-section,
+            .bottom-panel {
+                order: 4;
+                flex-basis: 100%;
+                width: 100%;
+            }
+
+            .market-stats {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .market-info {
+                order: 3;
+                width: 100%;
+            }
+        }
+
+        /* Bottom panel (tabs + info card) */
+        .bottom-panel {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            padding-top: 8px;
+            flex-basis: 100%;
+            width: 100%;
+        }
+
+        .bottom-left {
+            flex: 1;
+            background: #0f1419;
+            border: 1px solid #1f2937;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .bottom-right {
+            width: 320px;
+            background: #0f1419;
+            border: 1px solid #1f2937;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .bottom-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .bottom-tab {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 6px;
+        }
+
+        .bottom-tab.active {
+            color: #10b981;
+            border-bottom: 2px solid #10b981;
+        }
+
+        .bottom-content .tab-pane {
+            display: none;
+        }
+
+        .bottom-content .tab-pane.active {
+            display: block;
+        }
+
+        .bottom-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+            color: #9ca3af;
+        }
+
+        .bottom-table th,
+        .bottom-table td {
+            padding: 8px 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .no-positions-box {
+            padding: 40px 10px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        /* Coin dropdown */
+        .coin-dropdown {
+            position: absolute;
+            right: 0;
+            top: 46px;
+            background: #0f1419;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 6px 0;
+            min-width: 140px;
+            z-index: 100;
+            display: none;
+        }
+
+        .coin-option {
+            padding: 8px 12px;
+            color: #e5e7eb;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .coin-option:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Responsive tweaks for bottom panel */
+        @media (max-width: 1000px) {
+            .bottom-panel {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding-top: 8px;
+            }
+
+            .bottom-left,
+            .bottom-right {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .bottom-right {
+                margin-top: 6px;
+            }
+
+            /* Make bottom tabs scroll horizontally if they overflow */
+            .bottom-tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                white-space: nowrap;
+            }
+
+            .bottom-tab {
+                display: inline-block;
+                white-space: nowrap;
+            }
+
+            /* Constrain table pane height and allow vertical scroll inside left panel */
+            .bottom-content {
+                max-height: 260px;
+                overflow: auto;
+            }
+
+            /* Reduce padding in table cells to fit more columns */
+            .bottom-table th,
+            .bottom-table td {
+                padding: 6px 8px;
+                font-size: 0.72rem;
+            }
+        }
+
+        /* Further small-screen adjustments */
+        @media (max-width: 520px) {
+            .bottom-content {
+                max-height: 200px;
+            }
+
+            .bottom-table th,
+            .bottom-table td {
+                padding: 6px 6px;
+                font-size: 0.68rem;
+            }
+
+            /* Make tabs slightly smaller on tiny screens */
+            .bottom-tab {
+                padding: 5px 8px;
+                font-size: 0.78rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="trade-page">
+        <header class="header-transparent" id="mainHeader">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <!-- Logo -->
+                    <a class="navbar-brand" href="#">
+                        <div class="d-flex align-items-center">
+                            <span class="logo-icon me-2">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                            </span>
+                            <span class="logo-text">MyPortal</span>
+                        </div>
+                    </a>
+
+                    <!-- Mobile Toggle Button -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <!-- Nav Menu -->
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto align-items-center">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="trade.html">Trade</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="wallet.html">Wallet</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="assets.html">Assets</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="support.html">Support(1:1)</a>
+                            </li>
+                            <li class="nav-item ms-lg-3">
+                                <a href="login-signup.html" class="btn-login">Login</a>
+                            </li>
+                            <li class="nav-item ms-2">
+                                <a href="login-signup.html" class="btn-signup">Sign Up</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- header -->
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-section">
+
+                <div class="coin-select" id="coinSelect" onclick="toggleCoinDropdown(event)" style="position:relative;">
+                    <div class="coin-icon"></div>
+                    <div class="price-info">
+                        <div style="font-weight: 600;">BTC/USDT</div>
+                    </div>
+                    <i class="bi bi-chevron-down" id="coinChevron"></i>
+                    <div class="coin-dropdown" id="coinDropdown" aria-hidden="true">
+                        <div class="coin-option" onclick="selectCoin('BTC/USDT', event)">BTC/USDT</div>
+                        <div class="coin-option" onclick="selectCoin('ETH/USDT', event)">ETH/USDT</div>
+                        <div class="coin-option" onclick="selectCoin('BNB/USDT', event)">BNB/USDT</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="market-info">
+                <div class="price-info">
+                    <div class="current-price" id="currentPrice">91294.00</div>
+                    <div class="price-change" id="priceChange">+0.19%</div>
+                </div>
+
+                <div class="market-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">24h High</span>
+                        <span class="stat-value">91,295.70</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">24h Low</span>
+                        <span class="stat-value">91,294.00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">24h Volume</span>
+                        <span class="stat-value">1,891,571,644</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Main Trading Layout -->
+        <div class="trading-layout">
+            <!-- Chart Section -->
+            <div class="chart-section">
+                <div class="chart-container" id="tradingViewChart">
+                    <!-- TradingView Chart will be embedded here -->
+                    <iframe
+                        src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=BINANCE%3ABTCUSDT&interval=D&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0e17&studies=%5B%5D&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&showpopupbutton=1&locale=en&utm_source=&utm_medium=widget&utm_campaign=chart&utm_term=BINANCE%3ABTCUSDT"
+                        style="width: 100%; height: 100%; border: none; background: transparent;"
+                        title="Trading chart"></iframe>
+                </div>
+            </div>
+
+            <!-- Order Book -->
+            <div class="orderbook-section">
+                <div class="section-title">
+                    Order Book
+                    <i class="bi bi-three-dots"></i>
+                </div>
+
+                <div class="orderbook-header">
+                    <span>Price</span>
+                    <span>Amount</span>
+                    <span>Sum</span>
+                </div>
+
+                <div id="sellOrders">
+                    <div class="orderbook-row sell" style="--depth: 85%">
+                        <span>91253.80</span>
+                        <span>0.125</span>
+                        <span>2.160</span>
+                    </div>
+                    <div class="orderbook-row sell" style="--depth: 75%">
+                        <span>91253.70</span>
+                        <span>0.110</span>
+                        <span>2.158</span>
+                    </div>
+                    <div class="orderbook-row sell" style="--depth: 65%">
+                        <span>91253.60</span>
+                        <span>0.095</span>
+                        <span>2.157</span>
+                    </div>
+                    <div class="orderbook-row sell" style="--depth: 55%">
+                        <span>91253.50</span>
+                        <span>0.080</span>
+                        <span>2.157</span>
+                    </div>
+                    <div class="orderbook-row sell" style="--depth: 45%">
+                        <span>91253.40</span>
+                        <span>0.065</span>
+                        <span>2.156</span>
+                    </div>
+                </div>
+
+                <div class="current-price-row">
+                    91294.00 USDT
+                </div>
+
+                <div id="buyOrders">
+                    <div class="orderbook-row buy" style="--depth: 70%">
+                        <span>91294.10</span>
+                        <span>0.965</span>
+                        <span>7.303</span>
+                    </div>
+                    <div class="orderbook-row buy" style="--depth: 60%">
+                        <span>91294.20</span>
+                        <span>0.903</span>
+                        <span>7.305</span>
+                    </div>
+                    <div class="orderbook-row buy" style="--depth: 50%">
+                        <span>91294.30</span>
+                        <span>0.110</span>
+                        <span>7.416</span>
+                    </div>
+                    <div class="orderbook-row buy" style="--depth: 40%">
+                        <span>91294.40</span>
+                        <span>0.110</span>
+                        <span>7.588</span>
+                    </div>
+                    <div class="orderbook-row buy" style="--depth: 30%">
+                        <span>91294.50</span>
+                        <span>0.003</span>
+                        <span>7.837</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trading Panel -->
+            <div class="trading-panel">
+                <div class="side-header"
+                    style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <div class="retained-assets"
+                        style="background:#0f1419;padding:12px;border-radius:8px;border:1px solid #1f2937;flex:1;margin-right:10px;color:#e5e7eb;">
+                        <div style="font-size:0.85rem;color:#9ca3af;margin-bottom:6px">Retained assets</div>
+                        <div style="font-weight:700">USDT</div>
+                    </div>
+                    <div
+                        style="width:120px;background:#0f1419;padding:12px;border-radius:8px;border:1px solid #1f2937;text-align:center;color:#e5e7eb;">
+                        <div style="font-size:0.75rem;color:#9ca3af">Leverage</div>
+                        <div style="font-weight:700">Cross</div>
+                    </div>
+                </div>
+                <div class="trading-tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'limit')">Limit</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'market')">Market</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'stop')">Stop Limit</button>
+                </div>
+
+                <form class="order-form" id="orderForm">
+                    <div class="form-group">
+                        <label>Leverage</label>
+                        <div class="leverage-selector">
+                            <button type="button" class="leverage-btn" onclick="setLeverage(event, 10)">10x</button>
+                            <button type="button" class="leverage-btn" onclick="setLeverage(event, 25)">25x</button>
+                            <button type="button" class="leverage-btn active"
+                                onclick="setLeverage(event, 50)">50x</button>
+                            <button type="button" class="leverage-btn" onclick="setLeverage(event, 75)">75x</button>
+                            <button type="button" class="leverage-btn" onclick="setLeverage(event, 100)">100x</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price</label>
+                        <div class="input-group">
+                            <input type="number" placeholder="91294.00" id="priceInput" value="91294.00">
+                            <span class="input-group-text">USDT</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <div class="input-group">
+                            <input type="number" placeholder="0.00" id="amountInput">
+                            <span class="input-group-text">BTC</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="0" class="slider" id="quantitySlider">
+                            <div
+                                style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #6b7280; margin-top: 5px;">
+                                <span>0%</span>
+                                <span>25%</span>
+                                <span>50%</span>
+                                <span>75%</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span style="color: #6b7280;">Available:</span>
+                            <span>Con 0.0 USDT</span>
+                        </div>
+                        <div class="summary-row">
+                            <span style="color: #6b7280;">Cost:</span>
+                            <span id="costValue">0.0 USDT</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+
+                        <button type="button" class="btn-long" onclick="placeOrder('long')">
+                            <i class="bi bi-arrow-up-circle"></i> Long
+                        </button>
+
+                        <button type="button" class="btn-short" onclick="placeOrder('short')">
+                            <i class="bi bi-arrow-down-circle"></i> Short
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Bottom panel (positions / history / details) -->
+            <div class="bottom-panel">
+                <div class="bottom-left">
+                    <div class="bottom-tabs" role="tablist">
+                        <button class="bottom-tab active" onclick="switchBottomTab(event,'positions')">Position
+                            (0)</button>
+                        <button class="bottom-tab" onclick="switchBottomTab(event,'copy')">Trading in copy (0)</button>
+                        <button class="bottom-tab" onclick="switchBottomTab(event,'history')">History (0)</button>
+                        <button class="bottom-tab" onclick="switchBottomTab(event,'contract')">Contract details</button>
+                    </div>
+
+                    <div class="bottom-content" style="overflow-x: auto;">
+                        <div id="bp-positions" class="tab-pane active">
+                            <table class="bottom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th>Status</th>
+                                        <th>Side</th>
+                                        <th>Qty</th>
+                                        <th>Avg Fill Price</th>
+                                        <th>Take Profit</th>
+                                        <th>Stop Loss</th>
+                                        <th>Last Price</th>
+                                        <th>Unrealized P&L</th>
+                                        <th>Unrealized P&L %</th>
+                                        <th>Leverage</th>
+                                        <th>Set P&L</th>
+                                        <th>Liquidation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>BTC/USDT</td>
+                                        <td>Open</td>
+                                        <td style="color:#10b981">Long</td>
+                                        <td>0.125</td>
+                                        <td>91,200.00</td>
+                                        <td>95,000.00</td>
+                                        <td>89,000.00</td>
+                                        <td>91,325.10</td>
+                                        <td style="color:#10b981">+150.50</td>
+                                        <td style="color:#10b981">+1.66%</td>
+                                        <td>50x</td>
+                                        <td>—</td>
+                                        <td>99,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ETH/USDT</td>
+                                        <td>Open</td>
+                                        <td style="color:#ef4444">Short</td>
+                                        <td>2.500</td>
+                                        <td>3,200.00</td>
+                                        <td>3,000.00</td>
+                                        <td>3,350.00</td>
+                                        <td>3,180.50</td>
+                                        <td style="color:#ef4444">-45.00</td>
+                                        <td style="color:#ef4444">-0.70%</td>
+                                        <td>25x</td>
+                                        <td>—</td>
+                                        <td>2,900</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BNB/USDT</td>
+                                        <td>Open</td>
+                                        <td style="color:#10b981">Long</td>
+                                        <td>10.000</td>
+                                        <td>420.00</td>
+                                        <td>480.00</td>
+                                        <td>390.00</td>
+                                        <td>425.50</td>
+                                        <td style="color:#10b981">+55.00</td>
+                                        <td style="color:#10b981">+1.30%</td>
+                                        <td>10x</td>
+                                        <td>—</td>
+                                        <td>360</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="bp-copy" class="tab-pane">
+                            <table class="bottom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th>Trader</th>
+                                        <th>Side</th>
+                                        <th>Qty</th>
+                                        <th>Avg Price</th>
+                                        <th>P&L</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>BTC/USDT</td>
+                                        <td>@pro_trader</td>
+                                        <td style="color:#10b981">Long</td>
+                                        <td>0.050</td>
+                                        <td>91,100.00</td>
+                                        <td style="color:#10b981">+60.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ETH/USDT</td>
+                                        <td>@alpha</td>
+                                        <td style="color:#ef4444">Short</td>
+                                        <td>1.200</td>
+                                        <td>3,210.00</td>
+                                        <td style="color:#ef4444">-12.50</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="bp-history" class="tab-pane">
+                            <table class="bottom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Symbol</th>
+                                        <th>Type</th>
+                                        <th>Side</th>
+                                        <th>Price</th>
+                                        <th>Amount</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2026-01-04 10:12</td>
+                                        <td>BTC/USDT</td>
+                                        <td>Market</td>
+                                        <td style="color:#10b981">Long</td>
+                                        <td>91,000.00</td>
+                                        <td>0.020</td>
+                                        <td style="color:#10b981">+12.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2026-01-03 18:46</td>
+                                        <td>ETH/USDT</td>
+                                        <td>Limit</td>
+                                        <td style="color:#ef4444">Short</td>
+                                        <td>3,250.00</td>
+                                        <td>0.500</td>
+                                        <td style="color:#ef4444">-8.75</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="bp-contract" class="tab-pane">
+                            <div style="font-size:0.85rem;color:#9ca3af">Contract details content goes here.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-right">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <div style="font-weight:700;color:#e5e7eb">More information</div>
+                        <div style="font-size:0.85rem;color:#9ca3af">deposit <span
+                                style="margin-left:8px;color:#6b7280">Futures Information</span></div>
+                    </div>
+
+                    <div style="background:#0b1220;padding:10px;border-radius:6px;border:1px solid #1f2937">
+                        <div style="font-size:0.85rem;color:#9ca3af;margin-bottom:6px">deposit</div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                            <div style="color:#9ca3af">Retained assets</div>
+                            <div style="color:#e5e7eb">—</div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                            <div style="color:#9ca3af">available assets</div>
+                            <div style="color:#e5e7eb">—</div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                            <div style="color:#9ca3af">assets in use</div>
+                            <div style="color:#e5e7eb">0</div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <div style="color:#9ca3af">frozen assets</div>
+                            <div style="color:#e5e7eb">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <footer class="footer-dark pt-5">
+            <div class="container">
+                <!-- Main Footer Content -->
+                <div class="row g-4 pb-4">
+                    <!-- Logo Column -->
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="logo-icon me-2"><i class="fas fa-project-diagram"></i></span>
+                            <span class="logo-text">MyPortal</span>
+                        </div>
+                    </div>
+                    <!-- About Column -->
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <h6 class="footer-heading mb-3">About</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="#" class="footer-link">Features</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">FAQ</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">Pricing</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">App</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">Affiliates</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Company Column -->
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <h6 class="footer-heading mb-3">Company</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="#" class="footer-link">Contact Us</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">Case Studies</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">Terms</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">Privacy</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Resources Column -->
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <h6 class="footer-heading mb-3">Resources</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="#" class="footer-link">Enterprise</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">Documentation</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">YouTube</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">Developer API</a></li>
+                            <li class="mb-2"><a href="#" class="footer-link">Status Page</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Platform Status Column -->
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <h6 class="footer-heading mb-3">Platform Status</h6>
+                        <div class="status-badge">
+                            <span class="status-dot"></span>
+                            <span>All systems operational</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <hr class="footer-divider my-4">
+
+                <!-- Social Links & Copyright -->
+                <div class="row align-items-center py-3">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="d-flex gap-3">
+                            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex flex-wrap justify-content-md-end gap-3 small">
+                            <span>Copyright @ 2028 TC Services LLC-FZ</span>
+                            <span>|</span>
+                            <span>Made in UK</span>
+                            <span>|</span>
+                            <a href="#" class="footer-link">Terms of Service</a>
+                            <span>|</span>
+                            <a href="#" class="footer-link">Privacy Policy</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <hr class="footer-divider my-4">
+
+                <!-- Disclaimers -->
+                <div class="row pb-4">
+                    <div class="col-12">
+                        <p class="disclaimer-text mb-3">
+                            Futures and forex trading contains substantial risk and is not for every investor. An
+                            investor could
+                            potentially lose all or more than the initial investment. Risk capital is money that can be
+                            lost without
+                            jeopardizing ones financial security or life style. Only risk capital should be used for
+                            trading and only
+                            those with sufficient risk capital should consider trading. Past performance is not
+                            necessarily indicative
+                            of future results.
+                        </p>
+                        <p class="disclaimer-text mb-3">
+                            Testimonials appearing on this website may not be representative of other clients or
+                            customers and is not a
+                            guarantee of future performance or success.
+                        </p>
+                        <p class="disclaimer-text mb-0">
+                            <strong>Trademarks Disclaimer</strong><br>
+                            All product names, logos, brands, and trademarks are the property of their respective
+                            owners. All company,
+                            product, and service names used on this website are for identification purposes only. Use of
+                            these names,
+                            trademarks, and brands does not imply endorsement, affiliation, or sponsorship. Traders
+                            Connect is not
+                            affiliated with, endorsed by, or sponsored by any of the trademark holders mentioned unless
+                            specifically
+                            stated otherwise. All rights to third-party trademarks are respected and acknowledged.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Tab handler: accept event so we can access the clicked button
+        function switchTab(e, tab) {
+            e = e || window.event;
+            const btn = e.currentTarget || e.target;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // future: implement tab-specific UI changes based on `tab`
+        }
+
+        // Leverage selector: accept event and leverage value
+        function setLeverage(e, leverage) {
+            e = e || window.event;
+            const btn = e.currentTarget || e.target;
+            document.querySelectorAll('.leverage-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            window.selectedLeverage = leverage;
+        }
+
+        // Coin dropdown handlers
+        function toggleCoinDropdown(e) {
+            e.stopPropagation();
+            const dd = document.getElementById('coinDropdown');
+            if (!dd) return;
+            dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function selectCoin(symbol, e) {
+            e.stopPropagation();
+            const target = document.querySelector('.coin-select .price-info div');
+            if (target) target.textContent = symbol;
+            const dd = document.getElementById('coinDropdown');
+            if (dd) dd.style.display = 'none';
+            // optional: update embedded chart symbol
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function () {
+            const dd = document.getElementById('coinDropdown');
+            if (dd) dd.style.display = 'none';
+        });
+
+        // Bottom panel tab switching
+        function switchBottomTab(e, tab) {
+            e = e || window.event;
+            const btn = e.currentTarget || e.target;
+            document.querySelectorAll('.bottom-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // hide all panes
+            document.querySelectorAll('.bottom-content .tab-pane').forEach(p => p.classList.remove('active'));
+            const pane = document.getElementById('bp-' + tab);
+            if (pane) pane.classList.add('active');
+        }
+
+        // Wait until DOM is ready before binding inputs
+        document.addEventListener('DOMContentLoaded', function () {
+            const priceInput = document.getElementById('priceInput');
+            const amountInput = document.getElementById('amountInput');
+            const quantitySlider = document.getElementById('quantitySlider');
+
+            if (priceInput) priceInput.addEventListener('input', calculateCost);
+            if (amountInput) amountInput.addEventListener('input', calculateCost);
+            if (quantitySlider) quantitySlider.addEventListener('input', function () {
+                const percentage = this.value;
+                // calculate amount based on percentage and available balance (not implemented)
+            });
+
+            // initialize cost display
+            calculateCost();
+        });
+
+        function calculateCost() {
+            const price = parseFloat(document.getElementById('priceInput').value) || 0;
+            const amount = parseFloat(document.getElementById('amountInput').value) || 0;
+            const cost = (price * amount).toFixed(2);
+            const el = document.getElementById('costValue');
+            if (el) el.textContent = cost + ' USDT';
+        }
+
+        function placeOrder(type) {
+            const priceEl = document.getElementById('priceInput');
+            const amountEl = document.getElementById('amountInput');
+            const price = priceEl ? priceEl.value : null;
+            const amount = amountEl ? amountEl.value : null;
+
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            const orderData = { type, price, amount, timestamp: new Date().toISOString() };
+            console.log('Order placed:', orderData);
+            alert(type.toUpperCase() + ' order placed successfully!\nPrice: ' + price + '\nAmount: ' + amount);
+        }
+
+        // Simulate price updates every 3s
+        setInterval(function () {
+            const cpEl = document.getElementById('currentPrice');
+            const priceInput = document.getElementById('priceInput');
+            if (!cpEl) return;
+            const currentPrice = parseFloat(cpEl.textContent.replace(/,/g, '')) || 0;
+            const change = (Math.random() - 0.5) * 10;
+            const newPrice = currentPrice + change;
+            cpEl.textContent = newPrice.toFixed(2);
+            if (priceInput) priceInput.value = newPrice.toFixed(2);
+        }, 3000);
+
+        // Header scroll effect
+        window.addEventListener('scroll', function () {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+    <script src="assets/script/script.js"></script>
+</body>
+
+</html>

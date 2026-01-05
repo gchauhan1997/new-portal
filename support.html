@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support & Help - MyPortal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Support Page Styles */
+        body {
+            padding-top: 80px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0a0e1a 0%, #0f1419 100%);
+            min-height: 100vh;
+        }
+
+        .support-container {
+            padding: 30px 0 60px;
+        }
+
+        .support-header {
+            text-align: center;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInDown 0.8s ease forwards;
+        }
+
+        .support-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .support-header p {
+            font-size: 1.1rem;
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        /* Main Layout */
+        .support-wrapper {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Sidebar */
+        .support-sidebar {
+            opacity: 0;
+            animation: fadeInLeft 0.8s ease 0.2s forwards;
+        }
+
+        .ticket-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .ticket-list-header h3 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .new-ticket-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .new-ticket-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .ticket-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .ticket-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(16, 185, 129, 0.3);
+            transform: translateX(5px);
+        }
+
+        .ticket-item.active {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: #10b981;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .ticket-id {
+            color: #10b981;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .ticket-title {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .ticket-preview {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .ticket-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .ticket-date {
+            color: #6b7280;
+        }
+
+        .ticket-status {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .status-open {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .status-resolved {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-closed {
+            background: rgba(107, 114, 128, 0.2);
+            color: #9ca3af;
+        }
+
+        /* Main Content Area */
+        .support-content {
+            opacity: 0;
+            animation: fadeInRight 0.8s ease 0.2s forwards;
+        }
+
+        .ticket-detail-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .ticket-detail-header {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            padding: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ticket-detail-title {
+            color: #ffffff;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .ticket-detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.95rem;
+            color: #9ca3af;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-icon {
+            color: #10b981;
+            font-size: 1rem;
+        }
+
+        /* Conversation Thread */
+        .conversation-area {
+            padding: 30px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .message-group {
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: slideInUp 0.5s ease forwards;
+        }
+
+        .message-group:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .message-group:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .message-group:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .message-group:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .message-group:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .message-group:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .message-user {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+        }
+
+        .message-admin {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .avatar-user {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: #ffffff;
+            margin-left: 12px;
+        }
+
+        .avatar-admin {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            margin-right: 12px;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px 20px;
+            word-break: break-word;
+        }
+
+        .message-user .message-bubble {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .message-admin .message-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .message-content {
+            color: #ffffff;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .message-time {
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        .message-admin .message-sender {
+            color: #10b981;
+        }
+
+        /* Reply Area */
+        .reply-area {
+            padding: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .reply-form {
+            position: relative;
+        }
+
+        .reply-textarea {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .reply-textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+        }
+
+        .reply-textarea::placeholder {
+            color: #6b7280;
+        }
+
+        .reply-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .reply-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-attach {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #9ca3af;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-attach:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            color: #9ca3af;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .empty-description {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            background: rgba(15, 20, 25, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+        }
+
+        .modal-title {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .form-label {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #6b7280;
+        }
+
+        .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .form-select:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+            color: #ffffff;
+        }
+
+        .form-select option {
+            background: #0f1419;
+            color: #ffffff;
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+        }
+
+        .btn-modal-submit {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            color: #ffffff;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-modal-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: #10b981;
+            margin-bottom: 12px;
+        }
+
+        /* Scrollbar Styling */
+        .conversation-area::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .conversation-area::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .conversation-area::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+        }
+
+        .conversation-area::-webkit-scrollbar-thumb:hover {
+            background: rgba(16, 185, 129, 0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .support-wrapper {
+                grid-template-columns: 280px 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .support-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .support-header h1 {
+                font-size: 2rem;
+            }
+
+            .ticket-list-header {
+                margin-bottom: 16px;
+            }
+
+            .ticket-detail-card {
+                margin-top: 20px;
+            }
+
+            .conversation-area {
+                max-height: 400px;
+                padding: 20px;
+            }
+
+            .message-bubble {
+                max-width: 85%;
+            }
+
+            .ticket-detail-meta {
+                gap: 12px;
+                font-size: 0.85rem;
+            }
+
+            .reply-textarea {
+                min-height: 80px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .support-container {
+                padding: 20px 0 40px;
+            }
+
+            .support-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .support-header p {
+                font-size: 0.95rem;
+            }
+
+            .ticket-item {
+                padding: 12px;
+                margin-bottom: 10px;
+            }
+
+            .ticket-detail-header {
+                padding: 20px;
+            }
+
+            .ticket-detail-title {
+                font-size: 1.2rem;
+            }
+
+            .conversation-area {
+                padding: 20px;
+            }
+
+            .reply-area {
+                padding: 20px;
+            }
+
+            .message-bubble {
+                max-width: 100%;
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-transparent" id="mainHeader">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <div class="d-flex align-items-center">
+                        <span class="logo-icon me-2">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        </span>
+                        <span class="logo-text">MyPortal</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Nav Menu -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="trade.html">Trade</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="wallet.html">Wallet</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="assets.html">Assets</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="support.html">Support(1:1)</a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a href="login-signup.html" class="btn-login">Login</a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a href="login-signup.html" class="btn-signup">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- header -->
+
+    <!-- Support Container -->
+    <div class="support-container">
+        <div class="container-xl">
+            <!-- Header -->
+            <div class="support-header">
+                <h1><i class="bi bi-headset"></i> Help & Support</h1>
+                <p>View your support tickets and communicate with our team</p>
+            </div>
+
+            <!-- Main Support Area -->
+            <div class="support-wrapper">
+                <!-- Sidebar - Ticket List -->
+                <div class="support-sidebar">
+                    <div class="ticket-list-header">
+                        <h3>Your Tickets</h3>
+                        <button class="new-ticket-btn" data-bs-toggle="modal" data-bs-target="#newTicketModal">
+                            <i class="bi bi-plus-lg"></i> New
+                        </button>
+                    </div>
+
+                    <!-- Ticket Items -->
+                    <div id="ticketList">
+                        <!-- Ticket 1 -->
+                        <div class="ticket-item active" onclick="selectTicket(1, this)">
+                            <div class="ticket-id">#TKT-001</div>
+                            <div class="ticket-title">Account Verification Issue</div>
+                            <div class="ticket-preview">I'm having trouble verifying my account. The verification code
+                                is not...</div>
+                            <div class="ticket-meta">
+                                <span class="ticket-date">Jan 5, 2026</span>
+                                <span class="ticket-status status-resolved">Resolved</span>
+                            </div>
+                        </div>
+
+                        <!-- Ticket 2 -->
+                        <div class="ticket-item" onclick="selectTicket(2, this)">
+                            <div class="ticket-id">#TKT-002</div>
+                            <div class="ticket-title">Bitcoin Withdrawal Pending</div>
+                            <div class="ticket-preview">My Bitcoin withdrawal has been pending for 24 hours. Can you
+                                check...</div>
+                            <div class="ticket-meta">
+                                <span class="ticket-date">Jan 3, 2026</span>
+                                <span class="ticket-status status-pending">Pending</span>
+                            </div>
+                        </div>
+
+                        <!-- Ticket 3 -->
+                        <div class="ticket-item" onclick="selectTicket(3, this)">
+                            <div class="ticket-id">#TKT-003</div>
+                            <div class="ticket-title">Two-Factor Authentication Setup</div>
+                            <div class="ticket-preview">How do I enable 2FA on my account? I want to secure my...</div>
+                            <div class="ticket-meta">
+                                <span class="ticket-date">Dec 28, 2025</span>
+                                <span class="ticket-status status-resolved">Resolved</span>
+                            </div>
+                        </div>
+
+                        <!-- Ticket 4 -->
+                        <div class="ticket-item" onclick="selectTicket(4, this)">
+                            <div class="ticket-id">#TKT-004</div>
+                            <div class="ticket-title">Deposit Not Showing in Account</div>
+                            <div class="ticket-preview">I sent ETH to my wallet address but it's not appearing...</div>
+                            <div class="ticket-meta">
+                                <span class="ticket-date">Dec 22, 2025</span>
+                                <span class="ticket-status status-open">Open</span>
+                            </div>
+                        </div>
+
+                        <!-- Ticket 5 -->
+                        <div class="ticket-item" onclick="selectTicket(5, this)">
+                            <div class="ticket-id">#TKT-005</div>
+                            <div class="ticket-title">API Key Generation Error</div>
+                            <div class="ticket-preview">Getting an error when trying to generate API keys for...</div>
+                            <div class="ticket-meta">
+                                <span class="ticket-date">Dec 18, 2025</span>
+                                <span class="ticket-status status-closed">Closed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content - Ticket Detail -->
+                <div class="support-content">
+                    <div class="ticket-detail-card">
+                        <!-- Ticket Detail Header -->
+                        <div class="ticket-detail-header">
+                            <div class="ticket-detail-title">Account Verification Issue</div>
+                            <div class="ticket-detail-meta">
+                                <div class="meta-item">
+                                    <i class="bi bi-hash meta-icon"></i>
+                                    <span>#TKT-001</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="bi bi-calendar meta-icon"></i>
+                                    <span>Jan 5, 2026</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="bi bi-flag meta-icon"></i>
+                                    <span>Priority: Medium</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="ticket-status status-resolved">Resolved</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conversation Area -->
+                        <div class="conversation-area" id="conversationArea">
+                            <!-- User Message -->
+                            <div class="message-group">
+                                <div class="message-user">
+                                    <div class="message-bubble">
+                                        <div class="message-sender">You</div>
+                                        <div class="message-content">Hi, I'm having trouble verifying my account. I
+                                            submitted my documents 2 days ago but haven't received the verification code
+                                            yet.</div>
+                                        <div class="message-time">Jan 5, 2026 - 10:30 AM</div>
+                                    </div>
+                                    <div class="message-avatar avatar-user">JD</div>
+                                </div>
+                            </div>
+
+                            <!-- Admin Response -->
+                            <div class="message-group">
+                                <div class="message-admin">
+                                    <div class="message-avatar avatar-admin">AD</div>
+                                    <div class="message-bubble">
+                                        <div class="message-sender">Support Team (Admin)</div>
+                                        <div class="message-content">Hello! Thank you for contacting us. I'm looking
+                                            into your account verification. Could you please provide your account email
+                                            address so I can check the status?</div>
+                                        <div class="message-time">Jan 5, 2026 - 11:15 AM</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- User Follow-up -->
+                            <div class="message-group">
+                                <div class="message-user">
+                                    <div class="message-bubble">
+                                        <div class="message-sender">You</div>
+                                        <div class="message-content">Sure, my email is johndoe@example.com. I've been
+                                            waiting for the verification code in my email inbox.</div>
+                                        <div class="message-time">Jan 5, 2026 - 11:45 AM</div>
+                                    </div>
+                                    <div class="message-avatar avatar-user">JD</div>
+                                </div>
+                            </div>
+
+                            <!-- Admin Solution -->
+                            <div class="message-group">
+                                <div class="message-admin">
+                                    <div class="message-avatar avatar-admin">AD</div>
+                                    <div class="message-bubble">
+                                        <div class="message-sender">Support Team (Admin)</div>
+                                        <div class="message-content">Found the issue! Your email was marked as spam.
+                                            I've resent the verification code to your email. Please check both your
+                                            inbox and spam folder. You should receive it within 5 minutes.</div>
+                                        <div class="message-time">Jan 5, 2026 - 12:00 PM</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- User Confirmation -->
+                            <div class="message-group">
+                                <div class="message-user">
+                                    <div class="message-bubble">
+                                        <div class="message-sender">You</div>
+                                        <div class="message-content">Perfect! I found the code in my spam folder.
+                                            Verification is now complete. Thank you for your help!</div>
+                                        <div class="message-time">Jan 5, 2026 - 12:05 PM</div>
+                                    </div>
+                                    <div class="message-avatar avatar-user">JD</div>
+                                </div>
+                            </div>
+
+                            <!-- Admin Closing -->
+                            <div class="message-group">
+                                <div class="message-admin">
+                                    <div class="message-avatar avatar-admin">AD</div>
+                                    <div class="message-bubble">
+                                        <div class="message-sender">Support Team (Admin)</div>
+                                        <div class="message-content">Great! Glad we could resolve this for you. Your
+                                            account is now fully verified. If you need any further assistance, feel free
+                                            to reach out. Have a great day!</div>
+                                        <div class="message-time">Jan 5, 2026 - 12:10 PM</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reply Area -->
+                        <div class="reply-area">
+                            <div class="reply-form">
+                                <textarea class="reply-textarea" placeholder="Type your message here..."></textarea>
+                                <div class="reply-actions">
+                                    <button class="btn-attach">
+                                        <i class="bi bi-paperclip"></i> Attach File
+                                    </button>
+                                    <div class="reply-buttons">
+                                        <button class="btn-send" onclick="sendReply()">
+                                            <i class="bi bi-send"></i> Send Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Ticket Modal -->
+    <div class="modal fade" id="newTicketModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Support Ticket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-4">
+                        <label class="form-label">Category</label>
+                        <select class="form-select">
+                            <option value="">Select Category</option>
+                            <option value="account">Account & Verification</option>
+                            <option value="deposit">Deposit Issues</option>
+                            <option value="withdrawal">Withdrawal Issues</option>
+                            <option value="trading">Trading & Orders</option>
+                            <option value="security">Security & 2FA</option>
+                            <option value="api">API & Integration</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Priority</label>
+                        <select class="form-select">
+                            <option value="">Select Priority</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Subject</label>
+                        <input type="text" class="form-control" placeholder="Brief title of your issue">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="5"
+                            placeholder="Describe your issue in detail..."></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Attachments (Optional)</label>
+                        <div class="upload-area">
+                            <div class="upload-icon">
+                                <i class="bi bi-cloud-upload"></i>
+                            </div>
+                            <p style="color: #9ca3af; margin: 12px 0 0 0;">Drag files here or click to upload</p>
+                            <small style="color: #6b7280;">Max file size: 5MB</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-modal-submit">Create Ticket</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+  <footer class="footer-dark pt-5">
+    <div class="container">
+      <!-- Main Footer Content -->
+      <div class="row g-4 pb-4">
+        <!-- Logo Column -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <span class="logo-icon me-2"><i class="fas fa-project-diagram"></i></span>
+            <span class="logo-text">MyPortal</span>
+          </div>
+        </div>
+        <!-- About Column -->
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-heading mb-3">About</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="#" class="footer-link">Features</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">FAQ</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">Pricing</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">App</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">Affiliates</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-heading mb-3">Company</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="#" class="footer-link">Contact Us</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">Case Studies</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">Terms</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">Privacy</a></li>
+          </ul>
+        </div>
+
+        <!-- Resources Column -->
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="footer-heading mb-3">Resources</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="#" class="footer-link">Enterprise</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">Documentation</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">YouTube</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">Developer API</a></li>
+            <li class="mb-2"><a href="#" class="footer-link">Status Page</a></li>
+          </ul>
+        </div>
+
+        <!-- Platform Status Column -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <h6 class="footer-heading mb-3">Platform Status</h6>
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            <span>All systems operational</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="footer-divider my-4">
+
+      <!-- Social Links & Copyright -->
+      <div class="row align-items-center py-3">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <div class="d-flex gap-3">
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex flex-wrap justify-content-md-end gap-3 small">
+            <span>Copyright @ 2028 TC Services LLC-FZ</span>
+            <span>|</span>
+            <span>Made in UK</span>
+            <span>|</span>
+            <a href="#" class="footer-link">Terms of Service</a>
+            <span>|</span>
+            <a href="#" class="footer-link">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="footer-divider my-4">
+
+      <!-- Disclaimers -->
+      <div class="row pb-4">
+        <div class="col-12">
+          <p class="disclaimer-text mb-3">
+            Futures and forex trading contains substantial risk and is not for every investor. An investor could
+            potentially lose all or more than the initial investment. Risk capital is money that can be lost without
+            jeopardizing ones financial security or life style. Only risk capital should be used for trading and only
+            those with sufficient risk capital should consider trading. Past performance is not necessarily indicative
+            of future results.
+          </p>
+          <p class="disclaimer-text mb-3">
+            Testimonials appearing on this website may not be representative of other clients or customers and is not a
+            guarantee of future performance or success.
+          </p>
+          <p class="disclaimer-text mb-0">
+            <strong>Trademarks Disclaimer</strong><br>
+            All product names, logos, brands, and trademarks are the property of their respective owners. All company,
+            product, and service names used on this website are for identification purposes only. Use of these names,
+            trademarks, and brands does not imply endorsement, affiliation, or sponsorship. Traders Connect is not
+            affiliated with, endorsed by, or sponsored by any of the trademark holders mentioned unless specifically
+            stated otherwise. All rights to third-party trademarks are respected and acknowledged.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function () {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Select Ticket Function
+        function selectTicket(ticketId, element) {
+            // Remove active class from all tickets
+            document.querySelectorAll('.ticket-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Add active class to clicked ticket
+            element.classList.add('active');
+
+            // Log ticket selection
+            console.log('Ticket ' + ticketId + ' selected');
+
+            // Scroll conversation to bottom
+            const conversationArea = document.getElementById('conversationArea');
+            setTimeout(() => {
+                conversationArea.scrollTop = conversationArea.scrollHeight;
+            }, 100);
+        }
+
+        // Send Reply Function
+        function sendReply() {
+            const textarea = document.querySelector('.reply-textarea');
+            const message = textarea.value.trim();
+
+            if (message === '') {
+                alert('Please enter a message');
+                return;
+            }
+
+            // Create new message element
+            const messageGroup = document.createElement('div');
+            messageGroup.className = 'message-group';
+            messageGroup.innerHTML = `
+                <div class="message-user">
+                    <div class="message-bubble">
+                        <div class="message-sender">You</div>
+                        <div class="message-content">${escapeHtml(message)}</div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    </div>
+                    <div class="message-avatar avatar-user">JD</div>
+                </div>
+            `;
+
+            // Add to conversation
+            const conversationArea = document.getElementById('conversationArea');
+            conversationArea.appendChild(messageGroup);
+
+            // Clear textarea
+            textarea.value = '';
+
+            // Scroll to bottom
+            conversationArea.scrollTop = conversationArea.scrollHeight;
+
+            // Show success message
+            alert('Message sent successfully!');
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Get current time
+        function getCurrentTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const date = String(now.getDate()).padStart(2, '0');
+            return `Jan ${date}, 2026 - ${hours}:${minutes}`;
+        }
+
+        // Auto-scroll to latest message on load
+        document.addEventListener('DOMContentLoaded', function () {
+            const conversationArea = document.getElementById('conversationArea');
+            conversationArea.scrollTop = conversationArea.scrollHeight;
+        });
+    </script>
+</body>
+
+</html>

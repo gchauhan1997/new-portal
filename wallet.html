@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deposit & Withdrawal - MyPortal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            padding-top: 80px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0a0e1a 0%, #0f1419 100%);
+            min-height: 100vh;
+        }
+
+        /* Main Container */
+        .deposit-withdraw-container {
+            padding: 30px 0;
+        }
+
+        /* Header Section */
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .page-header .subtitle {
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+
+        /* Tabs Navigation */
+        .nav-tabs {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #9ca3af;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 10px 0;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #10b981;
+            border-bottom-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #10b981;
+            border-bottom-color: #10b981;
+            background: transparent;
+        }
+
+        /* Tab Content */
+        .tab-pane {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form Section */
+        .form-card {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-card h3 {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        /* Form Groups */
+        .form-group-custom {
+            margin-bottom: 20px;
+        }
+
+        .form-group-custom label {
+            color: #d1d5db;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #10b981;
+            color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #6b7280;
+        }
+
+        .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 8px;
+        }
+
+        .form-select:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-select option {
+            background: #0f1419;
+            color: #ffffff;
+        }
+
+        /* Asset Selection */
+        .asset-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .asset-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #d1d5db;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .asset-btn:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .asset-btn.active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #10b981;
+            color: #ffffff;
+        }
+
+        .asset-icon-small {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Input Row */
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .info-box i {
+            color: #10b981;
+            margin-right: 10px;
+        }
+
+        /* Button Styles */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            color: #ffffff;
+        }
+
+        .btn-secondary-custom {
+            background: rgba(255, 255, 255, 0.05);
+            color: #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-custom:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* Two Column Layout */
+        .layout-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 992px) {
+            .layout-two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Payment Methods */
+        .payment-method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+        .payment-method.active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #10b981;
+        }
+
+        .payment-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .payment-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #d1d5db;
+        }
+
+        .payment-method.active .payment-label {
+            color: #ffffff;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #d1d5db;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+
+        .summary-label {
+            color: #9ca3af;
+        }
+
+        /* Transaction History */
+        .transaction-history {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .transaction-history h3 {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        /* Transaction Table */
+        .transactions-table {
+            background: transparent;
+            color: #ffffff;
+            margin-bottom: 0;
+        }
+
+        .transactions-table thead th {
+            background: rgba(255, 255, 255, 0.05);
+            color: #9ca3af;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .transactions-table tbody td {
+            color: #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            vertical-align: middle;
+            background-color: #0a0e1a;
+            white-space: nowrap;
+        }
+
+        .transactions-table tbody tr {
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+        }
+
+        .transactions-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Transaction Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .status-failed {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        /* Transaction Type */
+        .tx-type {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tx-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .tx-deposit .tx-icon {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .tx-withdraw .tx-icon {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        /* No Data Message */
+        .no-data {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+        }
+
+        .no-data i {
+            font-size: 3rem;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        /* Modal Overlay */
+        .modal-content {
+            background: rgba(15, 20, 25, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        /* Success Message */
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #10b981;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Fee Calculator */
+        .fee-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 3px solid #10b981;
+        }
+
+        .fee-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        .fee-info-row:last-child {
+            margin-bottom: 0;
+            font-weight: 700;
+            color: #10b981;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 8px;
+        }
+
+        /* QR Code Section */
+        .qr-section {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .qr-code {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .qr-code img {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Address Copy */
+        .address-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+
+        .address-box code {
+            color: #10b981;
+            flex: 1;
+            font-size: 0.85rem;
+        }
+
+        .copy-btn {
+            background: rgba(16, 185, 129, 0.2);
+            border: none;
+            color: #10b981;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: rgba(16, 185, 129, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+
+            .transactions-table {
+                font-size: 0.85rem;
+            }
+
+            .transactions-table thead th,
+            .transactions-table tbody td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-transparent" id="mainHeader">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <div class="d-flex align-items-center">
+                        <span class="logo-icon me-2">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        </span>
+                        <span class="logo-text">MyPortal</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Nav Menu -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="trade.html">Trade</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="wallet.html">Wallet</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="assets.html">Assets</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="support.html">Support(1:1)</a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a href="login-signup.html" class="btn-login">Login</a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a href="login-signup.html" class="btn-signup">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- header -->
+
+    <main class="container deposit-withdraw-container">
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <i class="bi bi-check-circle"></i> <span id="successText"></span>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1><i class="bi bi-wallet2"></i> Deposit & Withdraw</h1>
+            <p class="subtitle">Manage your funds - Deposit crypto/fiat and withdraw to your accounts</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="deposit-tab" data-bs-toggle="tab" data-bs-target="#deposit-content"
+                    type="button" role="tab">
+                    <i class="bi bi-arrow-down-circle me-2"></i>Deposit
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="withdraw-tab" data-bs-toggle="tab" data-bs-target="#withdraw-content"
+                    type="button" role="tab">
+                    <i class="bi bi-arrow-up-circle me-2"></i>Withdraw
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-content"
+                    type="button" role="tab">
+                    <i class="bi bi-clock-history me-2"></i>Transaction History
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- DEPOSIT TAB -->
+            <div class="tab-pane fade show active" id="deposit-content" role="tabpanel">
+                <div class="layout-two-col">
+                    <!-- Deposit Form -->
+                    <div>
+                        <div class="form-card">
+                            <h3><i class="bi bi-arrow-down-circle me-2"></i>Deposit Funds</h3>
+
+                            <div class="info-box">
+                                <i class="bi bi-info-circle"></i>
+                                <span>Choose your asset and deposit method to add funds to your wallet.</span>
+                            </div>
+
+                            <!-- Asset Selection -->
+                            <div class="form-group-custom">
+                                <label>Select Asset</label>
+                                <div class="asset-selection">
+                                    <button class="asset-btn active" data-asset="BTC">
+                                        <div class="asset-icon-small" style="background: #f7931a; color: white;">₿</div>
+                                        BTC
+                                    </button>
+                                    <button class="asset-btn" data-asset="ETH">
+                                        <div class="asset-icon-small" style="background: #627eea; color: white;">Ξ</div>
+                                        ETH
+                                    </button>
+                                    <button class="asset-btn" data-asset="USDT">
+                                        <div class="asset-icon-small" style="background: #10b981; color: white;">U</div>
+                                        USDT
+                                    </button>
+                                    <button class="asset-btn" data-asset="BNB">
+                                        <div class="asset-icon-small" style="background: #f3ba2f; color: #000;">Ⓑ</div>
+                                        BNB
+                                    </button>
+                                    <button class="asset-btn" data-asset="USD">
+                                        <div class="asset-icon-small" style="background: #007bff; color: white;">$</div>
+                                        USD
+                                    </button>
+                                    <button class="asset-btn" data-asset="EUR">
+                                        <div class="asset-icon-small" style="background: #6f42c1; color: white;">€</div>
+                                        EUR
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Deposit Method -->
+                            <div class="form-group-custom">
+                                <label>Deposit Method</label>
+                                <div class="payment-method-grid">
+                                    <div class="payment-method active" data-method="wallet">
+                                        <div class="payment-icon"><i class="bi bi-wallet-fill"></i></div>
+                                        <div class="payment-label">Wallet</div>
+                                    </div>
+                                    <div class="payment-method" data-method="bank">
+                                        <div class="payment-icon"><i class="bi bi-bank"></i></div>
+                                        <div class="payment-label">Bank</div>
+                                    </div>
+                                    <div class="payment-method" data-method="card">
+                                        <div class="payment-icon"><i class="bi bi-credit-card"></i></div>
+                                        <div class="payment-label">Card</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Amount -->
+                            <div class="form-group-custom">
+                                <label>Amount</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="depositAmount"
+                                        placeholder="Enter amount" step="0.01">
+                                    <span class="input-group-text" id="assetSymbol">BTC</span>
+                                </div>
+                            </div>
+
+                            <!-- Fee Information -->
+                            <div class="fee-info">
+                                <div class="fee-info-row">
+                                    <span>Deposit Amount:</span>
+                                    <span id="feeAmount">0 BTC</span>
+                                </div>
+                                <div class="fee-info-row">
+                                    <span>Network Fee:</span>
+                                    <span id="networkFee">0.0001 BTC</span>
+                                </div>
+                                <div class="fee-info-row">
+                                    <span>Total to Receive:</span>
+                                    <span id="totalReceive">0 BTC</span>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary-custom" id="depositBtn">
+                                <i class="bi bi-check-circle me-2"></i>Confirm Deposit
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Deposit Information -->
+                    <div>
+                        <div class="form-card" id="depositInfo">
+                            <h3>Deposit Address</h3>
+                            <div class="qr-section" id="qrSection">
+                                <div class="qr-code">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=3F9A8B7C2E1D5G6H"
+                                        alt="QR Code">
+                                </div>
+                                <div class="address-box">
+                                    <code id="depositAddress">3F9A8B7C2E1D5G6H4K9L2M5N8P1Q4R7S</code>
+                                    <button class="copy-btn" onclick="copyToClipboard()">
+                                        <i class="bi bi-files"></i> Copy
+                                    </button>
+                                </div>
+                                <p style="color: #9ca3af; font-size: 0.85rem; margin-top: 15px;">
+                                    Only send <span id="assetName">Bitcoin</span> to this address. Sending any other
+                                    coin will result in permanent loss.
+                                </p>
+                            </div>
+
+                            <!-- Additional Info -->
+                            <div style="margin-top: 25px;">
+                                <h5 style="color: #ffffff; margin-bottom: 15px;">Deposit Details</h5>
+                                <div class="fee-info">
+                                    <div class="fee-info-row">
+                                        <span>Confirmation Time:</span>
+                                        <span>10-30 minutes</span>
+                                    </div>
+                                    <div class="fee-info-row">
+                                        <span>Min Deposit:</span>
+                                        <span id="minDeposit">0.0001 BTC</span>
+                                    </div>
+                                    <div class="fee-info-row">
+                                        <span>Status:</span>
+                                        <span class="status-badge status-completed">Active</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WITHDRAW TAB -->
+            <div class="tab-pane fade" id="withdraw-content" role="tabpanel">
+                <div class="layout-two-col">
+                    <!-- Withdraw Form -->
+                    <div>
+                        <div class="form-card">
+                            <h3><i class="bi bi-arrow-up-circle me-2"></i>Withdraw Funds</h3>
+
+                            <div class="info-box">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <span>You must complete identity verification before withdrawing.</span>
+                            </div>
+
+                            <!-- Asset Selection -->
+                            <div class="form-group-custom">
+                                <label>Select Asset</label>
+                                <div class="asset-selection">
+                                    <button class="asset-btn active" data-asset="BTC">
+                                        <div class="asset-icon-small" style="background: #f7931a; color: white;">₿</div>
+                                        BTC
+                                    </button>
+                                    <button class="asset-btn" data-asset="ETH">
+                                        <div class="asset-icon-small" style="background: #627eea; color: white;">Ξ</div>
+                                        ETH
+                                    </button>
+                                    <button class="asset-btn" data-asset="USDT">
+                                        <div class="asset-icon-small" style="background: #10b981; color: white;">U</div>
+                                        USDT
+                                    </button>
+                                    <button class="asset-btn" data-asset="BNB">
+                                        <div class="asset-icon-small" style="background: #f3ba2f; color: #000;">Ⓑ</div>
+                                        BNB
+                                    </button>
+                                    <button class="asset-btn" data-asset="USD">
+                                        <div class="asset-icon-small" style="background: #007bff; color: white;">$</div>
+                                        USD
+                                    </button>
+                                    <button class="asset-btn" data-asset="EUR">
+                                        <div class="asset-icon-small" style="background: #6f42c1; color: white;">€</div>
+                                        EUR
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Withdraw Method -->
+                            <div class="form-group-custom">
+                                <label>Withdraw Method</label>
+                                <div class="payment-method-grid">
+                                    <div class="payment-method active" data-method="wallet">
+                                        <div class="payment-icon"><i class="bi bi-wallet-fill"></i></div>
+                                        <div class="payment-label">Wallet</div>
+                                    </div>
+                                    <div class="payment-method" data-method="bank">
+                                        <div class="payment-icon"><i class="bi bi-bank"></i></div>
+                                        <div class="payment-label">Bank</div>
+                                    </div>
+                                    <div class="payment-method" data-method="card">
+                                        <div class="payment-icon"><i class="bi bi-credit-card"></i></div>
+                                        <div class="payment-label">Card</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recipient Address -->
+                            <div class="form-group-custom">
+                                <label>Recipient Address</label>
+                                <input type="text" class="form-control" id="recipientAddress"
+                                    placeholder="Enter wallet address">
+                            </div>
+
+                            <!-- Amount -->
+                            <div class="form-group-custom">
+                                <label>Amount to Withdraw</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="withdrawAmount"
+                                        placeholder="Enter amount" step="0.01">
+                                    <span class="input-group-text" id="assetSymbolWithdraw">BTC</span>
+                                </div>
+                                <small style="color: #9ca3af; margin-top: 5px;">Available: <span
+                                        id="availableAmount">0.25 BTC</span></small>
+                            </div>
+
+                            <!-- Fee Information -->
+                            <div class="fee-info">
+                                <div class="fee-info-row">
+                                    <span>Withdraw Amount:</span>
+                                    <span id="feeAmountWithdraw">0 BTC</span>
+                                </div>
+                                <div class="fee-info-row">
+                                    <span>Withdrawal Fee:</span>
+                                    <span id="withdrawalFee">0.0005 BTC</span>
+                                </div>
+                                <div class="fee-info-row">
+                                    <span>You Will Receive:</span>
+                                    <span id="youWillReceive">0 BTC</span>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary-custom" id="withdrawBtn">
+                                <i class="bi bi-check-circle me-2"></i>Confirm Withdrawal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Withdraw Information -->
+                    <div>
+                        <div class="form-card">
+                            <h3>Withdrawal Information</h3>
+
+                            <div class="fee-info">
+                                <div class="fee-info-row">
+                                    <span>Processing Time:</span>
+                                    <span>2-24 hours</span>
+                                </div>
+                                <div class="fee-info-row">
+                                    <span>Min Withdrawal:</span>
+                                    <span id="minWithdraw">0.001 BTC</span>
+                                </div>
+                                <div class="fee-info-row">
+                                    <span>Max Withdrawal:</span>
+                                    <span id="maxWithdraw">100 BTC</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 25px;">
+                                <h5 style="color: #ffffff; margin-bottom: 15px;">Important</h5>
+                                <ul style="color: #9ca3af; font-size: 0.9rem; padding-left: 20px;">
+                                    <li class="mb-2">Verify the recipient address carefully</li>
+                                    <li class="mb-2">Double-check all details before confirming</li>
+                                    <li class="mb-2">You cannot reverse transactions</li>
+                                    <li class="mb-2">Withdrawals are subject to verification</li>
+                                    <li class="mb-2">We may require additional information</li>
+                                </ul>
+                            </div>
+
+                            <!-- Security Tips -->
+                            <div class="info-box" style="margin-top: 25px;">
+                                <i class="bi bi-shield-check"></i>
+                                <span><strong>Security Tip:</strong> Always enable 2FA and use verified addresses
+                                    only.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRANSACTION HISTORY TAB -->
+            <div class="tab-pane fade" id="history-content" role="tabpanel">
+                <div class="transaction-history">
+                    <h3><i class="bi bi-clock-history me-2"></i>Transaction History</h3>
+
+                    <!-- Filters -->
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <div class="form-group-custom mb-0">
+                                <label>Asset</label>
+                                <select class="form-select" id="filterAsset">
+                                    <option value="">All Assets</option>
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="USDT">Tether (USDT)</option>
+                                    <option value="BNB">Binance Coin (BNB)</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                </select>
+                            </div>
+                            <div class="form-group-custom mb-0">
+                                <label>Type</label>
+                                <select class="form-select" id="filterType">
+                                    <option value="">All Types</option>
+                                    <option value="deposit">Deposit</option>
+                                    <option value="withdraw">Withdrawal</option>
+                                </select>
+                            </div>
+                            <div class="form-group-custom mb-0">
+                                <label>Status</label>
+                                <select class="form-select" id="filterStatus">
+                                    <option value="">All Status</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="failed">Failed</option>
+                                </select>
+                            </div>
+                            <div class="form-group-custom mb-0">
+                                <button class="btn btn-secondary-custom w-100" onclick="resetFilters()">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions Table -->
+                    <div class="table-responsive">
+                        <table class="table transactions-table" id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Asset</th>
+                                    <th>Amount</th>
+                                    <th>Fee</th>
+                                    <th>Date & Time</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTbody">
+                                <!-- Sample transactions will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- No Data Message -->
+                    <div class="no-data" id="noDataMessage" style="display: none;">
+                        <i class="bi bi-inbox"></i>
+                        <p>No transactions found</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-dark pt-5 mt-5">
+        <div class="container">
+            <div class="row g-4 pb-4">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="logo-icon me-2"><i class="fas fa-project-diagram"></i></span>
+                        <span class="logo-text">MyPortal</span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">About</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Features</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">FAQ</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Company</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Contact Us</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Terms</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Resources</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Documentation</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">API</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Status</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Platform Status</h6>
+                    <div class="status-badge">
+                        <span class="status-dot"></span>
+                        <span>All systems operational</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider my-4">
+            <div class="row align-items-center py-3">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="d-flex gap-3">
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex flex-wrap justify-content-md-end gap-3 small">
+                        <span>Copyright @ 2028 TC Services LLC-FZ</span>
+                        <a href="#" class="footer-link">Terms</a>
+                        <a href="#" class="footer-link">Privacy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample Transaction Data
+        const transactionData = [
+            {
+                id: 'TXN-001',
+                type: 'deposit',
+                asset: 'BTC',
+                amount: 0.25,
+                fee: 0.0001,
+                date: '2026-01-05 14:32',
+                status: 'completed',
+                address: '3F9A8B7C2E1D5G6H'
+            },
+            {
+                id: 'TXN-002',
+                type: 'withdraw',
+                asset: 'ETH',
+                amount: 1.5,
+                fee: 0.005,
+                date: '2026-01-04 10:15',
+                status: 'completed',
+                address: '0x742d35Cc6634C0532925a3b844Bc924e16C2e99c'
+            },
+            {
+                id: 'TXN-003',
+                type: 'deposit',
+                asset: 'USDT',
+                amount: 5000,
+                fee: 0,
+                date: '2026-01-04 08:45',
+                status: 'completed',
+                address: 'TKN1234567890'
+            },
+            {
+                id: 'TXN-004',
+                type: 'withdraw',
+                asset: 'BTC',
+                amount: 0.1,
+                fee: 0.0005,
+                date: '2026-01-03 16:20',
+                status: 'pending',
+                address: '1A1z7agoat4FqWznrK6W7owvxE7EvNjvp1'
+            },
+            {
+                id: 'TXN-005',
+                type: 'deposit',
+                asset: 'BNB',
+                amount: 0.5,
+                fee: 0.002,
+                date: '2026-01-03 12:10',
+                status: 'completed',
+                address: '0x8ba1f109551bD432803012645Ac136ddd64DBA72'
+            },
+            {
+                id: 'TXN-006',
+                type: 'withdraw',
+                asset: 'USD',
+                amount: 2500,
+                fee: 15,
+                date: '2026-01-02 09:30',
+                status: 'completed',
+                address: 'Bank Account ****1234'
+            },
+            {
+                id: 'TXN-007',
+                type: 'deposit',
+                asset: 'EUR',
+                amount: 1000,
+                fee: 0,
+                date: '2026-01-02 14:45',
+                status: 'failed',
+                address: 'Bank Account ****5678'
+            },
+            {
+                id: 'TXN-008',
+                type: 'deposit',
+                asset: 'BTC',
+                amount: 0.5,
+                fee: 0.0001,
+                date: '2026-01-01 11:20',
+                status: 'completed',
+                address: '3F9A8B7C2E1D5G6H'
+            }
+        ];
+
+        // Asset Information
+        const assetInfo = {
+            'BTC': { name: 'Bitcoin', symbol: 'BTC', minFee: 0.0001, minDeposit: 0.0001 },
+            'ETH': { name: 'Ethereum', symbol: 'ETH', minFee: 0.005, minDeposit: 0.01 },
+            'USDT': { name: 'Tether', symbol: 'USDT', minFee: 1, minDeposit: 10 },
+            'BNB': { name: 'Binance Coin', symbol: 'BNB', minFee: 0.002, minDeposit: 0.01 },
+            'USD': { name: 'US Dollar', symbol: 'USD', minFee: 1, minDeposit: 10 },
+            'EUR': { name: 'Euro', symbol: 'EUR', minFee: 1, minDeposit: 10 }
+        };
+
+        // Deposit Tab Logic
+        document.querySelectorAll('#deposit-content .asset-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('#deposit-content .asset-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const asset = this.dataset.asset;
+                updateDepositInfo(asset);
+            });
+        });
+
+        document.querySelectorAll('#deposit-content .payment-method').forEach(method => {
+            method.addEventListener('click', function () {
+                document.querySelectorAll('#deposit-content .payment-method').forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function updateDepositInfo(asset) {
+            const info = assetInfo[asset];
+            document.getElementById('assetSymbol').textContent = asset;
+            document.getElementById('assetName').textContent = info.name;
+            document.getElementById('minDeposit').textContent = info.minDeposit + ' ' + asset;
+            updateDepositFees();
+        }
+
+        function updateDepositFees() {
+            const amount = parseFloat(document.getElementById('depositAmount').value) || 0;
+            const asset = document.querySelector('#deposit-content .asset-btn.active').dataset.asset;
+            const info = assetInfo[asset];
+            const fee = amount > 0 ? info.minFee : 0;
+            const total = amount + fee;
+
+            document.getElementById('feeAmount').textContent = amount + ' ' + asset;
+            document.getElementById('networkFee').textContent = fee + ' ' + asset;
+            document.getElementById('totalReceive').textContent = total + ' ' + asset;
+        }
+
+        document.getElementById('depositAmount').addEventListener('input', updateDepositFees);
+
+        document.getElementById('depositBtn').addEventListener('click', function () {
+            const amount = document.getElementById('depositAmount').value;
+            const asset = document.querySelector('#deposit-content .asset-btn.active').dataset.asset;
+            const method = document.querySelector('#deposit-content .payment-method.active').dataset.method;
+
+            if (!amount || parseFloat(amount) <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            showSuccessMessage(`Deposit of ${amount} ${asset} initiated via ${method}. Transaction ID: TXN-${Date.now()}`);
+            document.getElementById('depositAmount').value = '';
+            updateDepositFees();
+        });
+
+        // Withdraw Tab Logic
+        document.querySelectorAll('#withdraw-content .asset-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('#withdraw-content .asset-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const asset = this.dataset.asset;
+                updateWithdrawInfo(asset);
+            });
+        });
+
+        document.querySelectorAll('#withdraw-content .payment-method').forEach(method => {
+            method.addEventListener('click', function () {
+                document.querySelectorAll('#withdraw-content .payment-method').forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function updateWithdrawInfo(asset) {
+            const info = assetInfo[asset];
+            document.getElementById('assetSymbolWithdraw').textContent = asset;
+            document.getElementById('minWithdraw').textContent = info.minDeposit + ' ' + asset;
+            document.getElementById('maxWithdraw').textContent = (info.minDeposit * 1000) + ' ' + asset;
+            updateWithdrawFees();
+        }
+
+        function updateWithdrawFees() {
+            const amount = parseFloat(document.getElementById('withdrawAmount').value) || 0;
+            const asset = document.querySelector('#withdraw-content .asset-btn.active').dataset.asset;
+            const info = assetInfo[asset];
+            const fee = amount > 0 ? info.minFee : 0;
+            const received = amount - fee;
+
+            document.getElementById('feeAmountWithdraw').textContent = amount + ' ' + asset;
+            document.getElementById('withdrawalFee').textContent = fee + ' ' + asset;
+            document.getElementById('youWillReceive').textContent = received + ' ' + asset;
+        }
+
+        document.getElementById('withdrawAmount').addEventListener('input', updateWithdrawFees);
+
+        document.getElementById('withdrawBtn').addEventListener('click', function () {
+            const amount = document.getElementById('withdrawAmount').value;
+            const address = document.getElementById('recipientAddress').value;
+            const asset = document.querySelector('#withdraw-content .asset-btn.active').dataset.asset;
+            const method = document.querySelector('#withdraw-content .payment-method.active').dataset.method;
+
+            if (!amount || parseFloat(amount) <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            if (!address || address.trim() === '') {
+                alert('Please enter a recipient address');
+                return;
+            }
+
+            showSuccessMessage(`Withdrawal of ${amount} ${asset} to ${address.substring(0, 10)}... initiated. Transaction ID: TXN-${Date.now()}`);
+            document.getElementById('withdrawAmount').value = '';
+            document.getElementById('recipientAddress').value = '';
+            updateWithdrawFees();
+        });
+
+        // Copy to Clipboard
+        function copyToClipboard() {
+            const address = document.getElementById('depositAddress').textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                const btn = event.target.closest('.copy-btn');
+                btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="bi bi-files"></i> Copy';
+                }, 2000);
+            });
+        }
+
+        // Show Success Message
+        function showSuccessMessage(message) {
+            const msgElement = document.getElementById('successMessage');
+            document.getElementById('successText').textContent = message;
+            msgElement.classList.add('show');
+            setTimeout(() => {
+                msgElement.classList.remove('show');
+            }, 5000);
+        }
+
+        // Load Transaction History
+        function loadTransactionHistory() {
+            const tbody = document.getElementById('transactionsTbody');
+            const noData = document.getElementById('noDataMessage');
+
+            if (transactionData.length === 0) {
+                tbody.innerHTML = '';
+                noData.style.display = 'block';
+                return;
+            }
+
+            tbody.innerHTML = transactionData.map(tx => `
+                <tr>
+                    <td>
+                        <div class="tx-type tx-${tx.type}">
+                            <div class="tx-icon">
+                                <i class="bi bi-${tx.type === 'deposit' ? 'arrow-down' : 'arrow-up'}"></i>
+                            </div>
+                            <span>${tx.type === 'deposit' ? 'Deposit' : 'Withdrawal'}</span>
+                        </div>
+                    </td>
+                    <td>${tx.asset}</td>
+                    <td>${tx.amount} ${tx.asset}</td>
+                    <td>${tx.fee} ${tx.asset}</td>
+                    <td><small>${tx.date}</small></td>
+                    <td>
+                        <span class="status-badge status-${tx.status}">
+                            ${tx.status.charAt(0).toUpperCase() + tx.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-light" onclick="viewTransactionDetails('${tx.id}')">
+                            <i class="bi bi-eye"></i> View
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            noData.style.display = 'none';
+        }
+
+        // Filter Transactions
+        function filterTransactions() {
+            const assetFilter = document.getElementById('filterAsset').value;
+            const typeFilter = document.getElementById('filterType').value;
+            const statusFilter = document.getElementById('filterStatus').value;
+
+            const filtered = transactionData.filter(tx => {
+                return (!assetFilter || tx.asset === assetFilter) &&
+                    (!typeFilter || tx.type === typeFilter) &&
+                    (!statusFilter || tx.status === statusFilter);
+            });
+
+            const tbody = document.getElementById('transactionsTbody');
+            const noData = document.getElementById('noDataMessage');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '';
+                noData.style.display = 'block';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(tx => `
+                <tr>
+                    <td>
+                        <div class="tx-type tx-${tx.type}">
+                            <div class="tx-icon">
+                                <i class="bi bi-${tx.type === 'deposit' ? 'arrow-down' : 'arrow-up'}"></i>
+                            </div>
+                            <span>${tx.type === 'deposit' ? 'Deposit' : 'Withdrawal'}</span>
+                        </div>
+                    </td>
+                    <td>${tx.asset}</td>
+                    <td>${tx.amount} ${tx.asset}</td>
+                    <td>${tx.fee} ${tx.asset}</td>
+                    <td><small>${tx.date}</small></td>
+                    <td>
+                        <span class="status-badge status-${tx.status}">
+                            ${tx.status.charAt(0).toUpperCase() + tx.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-light" onclick="viewTransactionDetails('${tx.id}')">
+                            <i class="bi bi-eye"></i> View
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            noData.style.display = 'none';
+        }
+
+        function resetFilters() {
+            document.getElementById('filterAsset').value = '';
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterStatus').value = '';
+            loadTransactionHistory();
+        }
+
+        function viewTransactionDetails(txId) {
+            const tx = transactionData.find(t => t.id === txId);
+            if (tx) {
+                alert(`Transaction Details:\n\nID: ${tx.id}\nType: ${tx.type.toUpperCase()}\nAsset: ${tx.asset}\nAmount: ${tx.amount}\nFee: ${tx.fee}\nDate: ${tx.date}\nStatus: ${tx.status}`);
+            }
+        }
+
+        // Event Listeners for Filters
+        document.getElementById('filterAsset').addEventListener('change', filterTransactions);
+        document.getElementById('filterType').addEventListener('change', filterTransactions);
+        document.getElementById('filterStatus').addEventListener('change', filterTransactions);
+
+        // Header Scroll Effect
+        let lastScrollTop = 0;
+        const header = document.getElementById('mainHeader');
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            lastScrollTop = scrollTop;
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDepositInfo('BTC');
+            updateWithdrawInfo('BTC');
+            loadTransactionHistory();
+        });
+    </script>
+</body>
+
+</html>

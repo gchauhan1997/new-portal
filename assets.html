@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wallet - MyPortal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            padding-top: 80px;
+            color: #ffffff;
+        }
+
+        /* Table dark background and action button styles */
+        .assets-table {
+            background: #07101a;
+            color: #ffffff;
+
+        }
+
+        .table-responsive-custom {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .assets-table thead th,
+        .assets-table tbody td {
+            color: #ffffff;
+            background-color: #0f1419;
+            white-space: nowrap;
+        }
+
+        .assets-table thead th {
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .assets-table tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .assets-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        /* Action buttons inside table (green background, white text) */
+        .assets-table .action-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            border: none;
+            box-shadow: none;
+        }
+
+        .assets-table .action-btn.me-1 {
+            margin-right: 6px;
+        }
+
+        /* Make table more compact on small screens */
+        @media (max-width: 520px) {
+            .assets-table thead th {
+                font-size: 0.72rem;
+            }
+
+            .assets-table tbody td {
+                font-size: 0.78rem;
+                padding: 8px 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-transparent" id="mainHeader">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <div class="d-flex align-items-center">
+                        <span class="logo-icon me-2">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        </span>
+                        <span class="logo-text">MyPortal</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Nav Menu -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="trade.html">Trade</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="wallet.html">Wallet</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="assets.html">Assets</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="support.html">Support(1:1)</a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a href="login-signup.html" class="btn-login">Login</a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a href="login-signup.html" class="btn-signup">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- header -->
+
+    <main class="container">
+        <div class="wallet-header mt-3">
+            <div>
+                <h3 style="margin-bottom:0">Wallet / Assets</h3>
+                <div style="color:#9ca3af;font-size:0.9rem">Overview of your balances and available actions</div>
+            </div>
+
+            <div class="d-flex gap-4 align-items-center justify-content-end ">
+                <div class="balance-card balance-summary text-end">
+                    <div style="font-size:0.85rem;color:#9ca3af">Total Balance (USD)</div>
+                    <div style="font-weight:700;font-size:1.25rem">$ 124,567.20</div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-light btn-deposit" id="depositBtn"><i
+                            class="bi bi-wallet2"></i> Deposit</button>
+                    <button class="btn btn-sm btn-outline-light btn-withdraw" id="withdrawBtn"><i
+                            class="bi bi-cash-stack"></i> Withdraw</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card my-3 mb-md-5" style="background:#0f1419;border:1px solid #1f2937">
+            <div class="card-body">
+                <div class="row align-items-center mb-2">
+                    <div class="col-md-6 mb-2 mb-md-0">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text" id="search-addon"><i class="bi bi-search"></i></span>
+                            <input type="text" id="searchInput" class="form-control form-control-sm"
+                                placeholder="Search asset (BTC, ETH, USDT)" aria-label="Search">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 text-md-end">
+                        <div class="form-check form-switch d-inline-block">
+                            <input class="form-check-input" type="checkbox" id="hideSmall" />
+                            <label class="form-check-label" for="hideSmall" style="color:#9ca3af;">Hide small
+                                balances</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive-custom">
+                    <table class="table assets-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Balance</th>
+                                <th>Available</th>
+                                <th>Locked</th>
+                                <th>Price (USD)</th>
+                                <th>Value (USD)</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assetsTbody">
+                            <tr data-symbol="BTC">
+                                <td>
+                                    <div class="asset-symbol">
+                                        <span class="asset-icon" style="background:#f7931a"></span>
+                                        <div>
+                                            <div style="font-weight:700">BTC</div>
+                                            <div style="color:#9ca3af;font-size:0.8rem">Bitcoin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>0.250</td>
+                                <td>0.200</td>
+                                <td>0.050</td>
+                                <td>$ 92,000.00</td>
+                                <td>$ 23,000.00</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm action-btn me-1" onclick="deposit('BTC')">Deposit</button>
+                                    <button class="btn btn-sm action-btn" onclick="withdraw('BTC')">Withdraw</button>
+                                </td>
+                            </tr>
+
+                            <tr data-symbol="ETH">
+                                <td>
+                                    <div class="asset-symbol">
+                                        <span class="asset-icon" style="background:#627eea"></span>
+                                        <div>
+                                            <div style="font-weight:700">ETH</div>
+                                            <div style="color:#9ca3af;font-size:0.8rem">Ethereum</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>1.800</td>
+                                <td>1.500</td>
+                                <td>0.300</td>
+                                <td>$ 3,200.00</td>
+                                <td>$ 5,760.00</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm action-btn me-1" onclick="deposit('ETH')">Deposit</button>
+                                    <button class="btn btn-sm action-btn" onclick="withdraw('ETH')">Withdraw</button>
+                                </td>
+                            </tr>
+
+                            <tr data-symbol="USDT">
+                                <td>
+                                    <div class="asset-symbol">
+                                        <span class="asset-icon" style="background:#10b981"></span>
+                                        <div>
+                                            <div style="font-weight:700">USDT</div>
+                                            <div style="color:#9ca3af;font-size:0.8rem">Tether</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>1200.50</td>
+                                <td>1200.50</td>
+                                <td>0.00</td>
+                                <td>$ 1.00</td>
+                                <td>$ 1,200.50</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm action-btn me-1"
+                                        onclick="deposit('USDT')">Deposit</button>
+                                    <button class="btn btn-sm action-btn" onclick="withdraw('USDT')">Withdraw</button>
+                                </td>
+                            </tr>
+
+                            <tr data-symbol="BNB">
+                                <td>
+                                    <div class="asset-symbol">
+                                        <span class="asset-icon" style="background:#f3ba2f"></span>
+                                        <div>
+                                            <div style="font-weight:700">BNB</div>
+                                            <div style="color:#9ca3af;font-size:0.8rem">Binance Coin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>0.020</td>
+                                <td>0.020</td>
+                                <td>0.000</td>
+                                <td>$ 420.00</td>
+                                <td>$ 8.40</td>
+                                <td class="text-end">
+                                    <button class="btn btn-sm action-btn me-1" onclick="deposit('BNB')">Deposit</button>
+                                    <button class="btn btn-sm action-btn" onclick="withdraw('BNB')">Withdraw</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="text-center mt-3 text-danger pb-4 d-none">Demo data — no real funds used.</div>
+
+    </main>
+
+    <!-- footer -->
+    <footer class="footer-dark pt-5">
+        <div class="container">
+            <!-- Main Footer Content -->
+            <div class="row g-4 pb-4">
+                <!-- Logo Column -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="logo-icon me-2"><i class="fas fa-project-diagram"></i></span>
+                        <span class="logo-text">MyPortal</span>
+                    </div>
+                </div>
+                <!-- About Column -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">About</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Features</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">FAQ</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Pricing</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">App</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Affiliates</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Column -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Company</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Contact Us</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Case Studies</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Terms</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Privacy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources Column -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Resources</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Enterprise</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Documentation</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">YouTube</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Developer API</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Status Page</a></li>
+                    </ul>
+                </div>
+
+                <!-- Platform Status Column -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Platform Status</h6>
+                    <div class="status-badge">
+                        <span class="status-dot"></span>
+                        <span>All systems operational</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <hr class="footer-divider my-4">
+
+            <!-- Social Links & Copyright -->
+            <div class="row align-items-center py-3">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="d-flex gap-3">
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex flex-wrap justify-content-md-end gap-3 small">
+                        <span>Copyright @ 2028 TC Services LLC-FZ</span>
+                        <span>|</span>
+                        <span>Made in UK</span>
+                        <span>|</span>
+                        <a href="#" class="footer-link">Terms of Service</a>
+                        <span>|</span>
+                        <a href="#" class="footer-link">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <hr class="footer-divider my-4">
+
+            <!-- Disclaimers -->
+            <div class="row pb-4">
+                <div class="col-12">
+                    <p class="disclaimer-text mb-3">
+                        Futures and forex trading contains substantial risk and is not for every investor. An investor
+                        could
+                        potentially lose all or more than the initial investment. Risk capital is money that can be lost
+                        without
+                        jeopardizing ones financial security or life style. Only risk capital should be used for trading
+                        and only
+                        those with sufficient risk capital should consider trading. Past performance is not necessarily
+                        indicative
+                        of future results.
+                    </p>
+                    <p class="disclaimer-text mb-3">
+                        Testimonials appearing on this website may not be representative of other clients or customers
+                        and is not a
+                        guarantee of future performance or success.
+                    </p>
+                    <p class="disclaimer-text mb-0">
+                        <strong>Trademarks Disclaimer</strong><br>
+                        All product names, logos, brands, and trademarks are the property of their respective owners.
+                        All company,
+                        product, and service names used on this website are for identification purposes only. Use of
+                        these names,
+                        trademarks, and brands does not imply endorsement, affiliation, or sponsorship. Traders Connect
+                        is not
+                        affiliated with, endorsed by, or sponsored by any of the trademark holders mentioned unless
+                        specifically
+                        stated otherwise. All rights to third-party trademarks are respected and acknowledged.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Basic interactivity: search & hide small balances
+        const searchInput = document.getElementById('searchInput');
+        const hideSmall = document.getElementById('hideSmall');
+        const tbody = document.getElementById('assetsTbody');
+
+        function formatNumber(n) {
+            return parseFloat(n).toFixed(6).replace(/\.0+$/, '');
+        }
+
+        function applyFilters() {
+            const q = (searchInput.value || '').trim().toLowerCase();
+            const hide = hideSmall.checked;
+            Array.from(tbody.querySelectorAll('tr')).forEach(tr => {
+                const symbol = (tr.dataset.symbol || '').toLowerCase();
+                const balance = parseFloat(tr.children[1].textContent.replace(/,/g, '')) || 0;
+                let show = true;
+                if (q && !symbol.includes(q)) show = false;
+                if (hide && balance < 0.05) show = false; // hide tiny balances
+                tr.style.display = show ? '' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', applyFilters);
+        hideSmall.addEventListener('change', applyFilters);
+
+        // Simple deposit/withdraw handlers (demo)
+        function deposit(symbol) {
+            alert('Deposit requested for ' + symbol + '.\nThis is a demo action.');
+        }
+
+        function withdraw(symbol) {
+            alert('Withdraw requested for ' + symbol + '.\nThis is a demo action.');
+        }
+
+        document.getElementById('depositBtn').addEventListener('click', function () {
+            alert('Deposit page - demo');
+        });
+        document.getElementById('withdrawBtn').addEventListener('click', function () {
+            alert('Withdraw page - demo');
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function () {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+
+</html>

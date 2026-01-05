@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup - TradersConnect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #000000;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 40px 0;
+        }
+
+        /* Background Effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            33% {
+                transform: translate(30px, -30px);
+            }
+
+            66% {
+                transform: translate(-20px, 20px);
+            }
+        }
+
+        /* Auth Container */
+        .auth-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 680px;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo */
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .auth-logo .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+
+        .auth-logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .auth-logo p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Form Styles */
+        .form-label {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .form-control,
+        .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #10b981;
+            color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #6b7280;
+        }
+
+        /* .form-select {
+            background-repeat: no-repeat;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2310b981' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        } */
+
+        .form-select option {
+            background-color: #1f2937;
+            color: #ffffff;
+        }
+
+        /* Password Toggle */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .password-toggle:hover {
+            color: #10b981;
+        }
+
+        /* Remember & Forgot */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        /* .form-check {
+            padding: 0;
+        } */
+
+        .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+
+        .form-check-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            color: #10b981;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: #059669;
+        }
+
+        /* Buttons */
+        .btn-primary-custom {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider span {
+            padding: 0 20px;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* Social Buttons */
+        .social-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .btn-social {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-social:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-social i {
+            font-size: 1.2rem;
+        }
+
+        /* Footer Text */
+        .auth-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #9ca3af;
+            font-size: 0.95rem;
+        }
+
+        .auth-footer a {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .auth-footer a:hover {
+            color: #059669;
+        }
+
+        /* Toggle Pages */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Back to Home */
+        .back-home {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+        }
+
+        .back-home a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-home a:hover {
+            color: #10b981;
+        }
+
+        /* Terms Modal */
+        .modal-content {
+            background-color: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-body h5 {
+            color: #10b981;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .modal-body p,
+        .modal-body ul {
+            color: #9ca3af;
+            line-height: 1.8;
+        }
+
+        .modal-body ul {
+            padding-left: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .auth-card {
+                padding: 40px 30px;
+            }
+
+            .auth-logo h1 {
+                font-size: 1.5rem;
+            }
+
+            .back-home {
+                top: 20px;
+                left: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Back to Home -->
+    <div class="back-home">
+        <a href="index.html" onclick="window.history.back(); return false;">
+            <i class="bi bi-arrow-left"></i>
+            <span>Back to Home</span>
+        </a>
+    </div>
+
+    <div class="auth-container">
+        <!-- Login Page -->
+        <div id="loginPage" class="page active">
+            <div class="auth-card">
+                <div class="auth-logo">
+                    <div class="logo-icon">
+                        <i class="bi bi-diagram-3"></i>
+                    </div>
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to your TradersConnect account</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-control" id="loginPassword"
+                                placeholder="Enter your password" required>
+                            <i class="bi bi-eye password-toggle" onclick="togglePassword('loginPassword', this)"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Remember me
+                            </label>
+                        </div>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary-custom">Sign In</button>
+                </form>
+
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <div class="social-buttons">
+                    <button class="btn-social">
+                        <i class="bi bi-google"></i>
+                        Google
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-apple"></i>
+                        Apple
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-facebook"></i>
+                        Facebook
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-twitter"></i>
+                        Twitter
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-wallet2"></i>
+                        MetaMask
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-currency-bitcoin"></i>
+                        Crypto
+                    </button>
+                </div>
+
+                <div class="auth-footer">
+                    Don't have an account? <a href="#" onclick="showSignup(); return false;">Sign Up</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Page -->
+        <div id="signupPage" class="page">
+            <div class="auth-card">
+                <div class="auth-logo">
+                    <div class="logo-icon">
+                        <i class="bi bi-diagram-3"></i>
+                    </div>
+                    <h1>Create Account</h1>
+                    <p>Start your trading journey with TradersConnect</p>
+                </div>
+
+                <form id="signupForm">
+                    <div class="mb-3">
+                        <label for="signupName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="signupName" placeholder="Enter your full name"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="signupEmail" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="accountType" class="form-label">Account Type</label>
+                        <select class="form-select" id="accountType" required>
+                            <option value="" selected>Select account type</option>
+                            <option value="individual">Individual Trader</option>
+                            <option value="professional">Professional Trader</option>
+                            <option value="institutional">Institutional</option>
+                            <option value="crypto">Crypto Trader</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tradingExperience" class="form-label">Trading Experience</label>
+                        <select class="form-select" id="tradingExperience" required>
+                            <option value="" selected>Select your experience</option>
+                            <option value="beginner">Beginner (0-1 years)</option>
+                            <option value="intermediate">Intermediate (1-3 years)</option>
+                            <option value="advanced">Advanced (3-5 years)</option>
+                            <option value="expert">Expert (5+ years)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="signupPassword" class="form-label">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-control" id="signupPassword"
+                                placeholder="Create a strong password" required>
+                            <i class="bi bi-eye password-toggle" onclick="togglePassword('signupPassword', this)"></i>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-control" id="signupConfirmPassword"
+                                placeholder="Confirm your password" required>
+                            <i class="bi bi-eye password-toggle"
+                                onclick="togglePassword('signupConfirmPassword', this)"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                        <label class="form-check-label" for="agreeTerms">
+                            I agree to the <a href="#" class="forgot-link" data-bs-toggle="modal"
+                                data-bs-target="#termsModal">Terms & Conditions</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary-custom">Create Account</button>
+                </form>
+
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <div class="social-buttons">
+                    <button class="btn-social">
+                        <i class="bi bi-google"></i>
+                        Google
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-apple"></i>
+                        Apple
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-facebook"></i>
+                        Facebook
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-twitter"></i>
+                        Twitter
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-wallet2"></i>
+                        MetaMask
+                    </button>
+                    <button class="btn-social">
+                        <i class="bi bi-currency-bitcoin"></i>
+                        Crypto
+                    </button>
+                </div>
+
+                <div class="auth-footer">
+                    Already have an account? <a href="#" onclick="showLogin(); return false;">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Last Updated: January 4, 2026</strong></p>
+
+                    <h5>1. Acceptance of Terms</h5>
+                    <p>By accessing and using TradersConnect, you accept and agree to be bound by the terms and
+                        provision of this agreement. If you do not agree to these Terms and Conditions, please do not
+                        use our services.</p>
+
+                    <h5>2. Description of Service</h5>
+                    <p>TradersConnect provides a cloud-based trade copying platform that allows users to synchronize
+                        trades across multiple trading accounts and platforms. Our services include:</p>
+                    <ul>
+                        <li>Trade copying with 20-30ms average execution time</li>
+                        <li>Multi-platform support (MetaTrader 4, MetaTrader 5, cTrader, etc.)</li>
+                        <li>Account analytics and performance tracking</li>
+                        <li>24/7 customer support</li>
+                        <li>Cloud-based infrastructure requiring no software downloads</li>
+                    </ul>
+
+                    <h5>3. User Responsibilities</h5>
+                    <p>As a user of TradersConnect, you agree to:</p>
+                    <ul>
+                        <li>Provide accurate, current, and complete information during registration</li>
+                        <li>Maintain the security of your password and account</li>
+                        <li>Notify us immediately of any unauthorized use of your account</li>
+                        <li>Accept responsibility for all activities that occur under your account</li>
+                        <li>Comply with all applicable laws and regulations</li>
+                    </ul>
+
+                    <h5>4. Trading Risks</h5>
+                    <p><strong>Important Risk Disclosure:</strong></p>
+                    <p>Futures and forex trading contains substantial risk and is not for every investor. An investor
+                        could potentially lose all or more than the initial investment. Risk capital is money that can
+                        be lost without jeopardizing one's financial security or lifestyle. Only risk capital should be
+                        used for trading and only those with sufficient risk capital should consider trading.</p>
+                    <ul>
+                        <li>Past performance is not necessarily indicative of future results</li>
+                        <li>Trading involves significant risk of loss</li>
+                        <li>You should carefully consider whether trading is suitable for you</li>
+                        <li>TradersConnect does not provide investment advice</li>
+                    </ul>
+
+                    <h5>5. Fees and Payments</h5>
+                    <p>Transaction fees are set at 0.1% of trade value. Additional fees may apply for premium features
+                        such as:</p>
+                    <ul>
+                        <li>Dedicated environment upgrades</li>
+                        <li>Enterprise solutions</li>
+                        <li>Priority support services</li>
+                    </ul>
+
+                    <h5>6. Data Privacy and Security</h5>
+                    <p>We take your privacy seriously. All user data is encrypted using bank-level security protocols.
+                        We never store sensitive credentials in plain text. Please review our Privacy Policy for
+                        detailed information about how we collect, use, and protect your data.</p>
+
+                    <h5>7. Intellectual Property</h5>
+                    <p>All product names, logos, brands, and trademarks displayed on TradersConnect are the property of
+                        their respective owners. Use of these names, trademarks, and brands does not imply endorsement.
+                    </p>
+
+                    <h5>8. Limitation of Liability</h5>
+                    <p>TradersConnect and its affiliates shall not be liable for any direct, indirect, incidental,
+                        special, consequential, or exemplary damages resulting from:</p>
+                    <ul>
+                        <li>Use or inability to use our services</li>
+                        <li>Trading losses or missed opportunities</li>
+                        <li>Unauthorized access to or alteration of your transmissions or data</li>
+                        <li>System downtime or technical issues</li>
+                    </ul>
+
+                    <h5>9. Service Modifications</h5>
+                    <p>We reserve the right to modify or discontinue, temporarily or permanently, the service (or any
+                        part thereof) with or without notice. You agree that TradersConnect shall not be liable to you
+                        or any third party for any modification, suspension, or discontinuance of the service.</p>
+
+                    <h5>10. Account Termination</h5>
+                    <p>We reserve the right to terminate or suspend your account and access to our services immediately,
+                        without prior notice or liability, for any reason whatsoever, including without limitation if
+                        you breach the Terms.</p>
+
+                    <h5>11. Governing Law</h5>
+                    <p>These Terms shall be governed and construed in accordance with the laws of the jurisdiction in
+                        which TradersConnect operates, without regard to its conflict of law provisions.</p>
+
+                    <h5>12. Contact Information</h5>
+                    <p>If you have any questions about these Terms & Conditions, please contact us through our support
+                        channels:</p>
+                    <ul>
+                        <li>Live Chat: Available 24/7</li>
+                        <li>Email: support@tradersconnect.com</li>
+                        <li>Ticket System: Through your account dashboard</li>
+                    </ul>
+
+                    <p><strong>By using TradersConnect, you acknowledge that you have read, understood, and agree to be
+                            bound by these Terms & Conditions.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary-custom" data-bs-dismiss="modal"
+                        onclick="acceptTerms()">I Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle between Login and Signup
+        function showSignup() {
+            document.getElementById('loginPage').classList.remove('active');
+            document.getElementById('signupPage').classList.add('active');
+        }
+
+        function showLogin() {
+            document.getElementById('signupPage').classList.remove('active');
+            document.getElementById('loginPage').classList.add('active');
+        }
+
+        // Toggle Password Visibility
+        function togglePassword(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        }
+
+        // Accept Terms
+        function acceptTerms() {
+            document.getElementById('agreeTerms').checked = true;
+        }
+
+        // Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            console.log('Login:', { email, password });
+            alert('Login functionality would be implemented here!');
+        });
+
+        // Signup Form Submission
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const accountType = document.getElementById('accountType').value;
+            const experience = document.getElementById('tradingExperience').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('Please accept the Terms & Conditions');
+                return;
+            }
+
+            console.log('Signup:', { name, email, accountType, experience, password });
+            alert('Signup functionality would be implemented here!');
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
