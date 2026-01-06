@@ -95,6 +95,7 @@
                 opacity: 0;
                 transform: translateY(10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -718,21 +719,31 @@
                             <a class="nav-link" href="trade.html">Trade</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="tradingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Finance</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="tradingDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Finance</a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="tradingDropdown">
-                                <li><a class="dropdown-item" href="wallet.html"><i class="bi bi-wallet2 me-2"></i>Wallet</a></li>
-                                <li><a class="dropdown-item" href="assets.html"><i class="bi bi-pie-chart me-2"></i>Assets</a></li>
-                                <li><a class="dropdown-item" href="bank-krw.html"><i class="bi bi-building me-2"></i>KRW Bank Deposit</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="notifications.html"><i class="bi bi-bell me-2"></i>Notifications & Activity</a></li>
+                                <li><a class="dropdown-item" href="wallet.html"><i
+                                            class="bi bi-wallet2 me-2"></i>Wallet</a></li>
+                                <li><a class="dropdown-item" href="assets.html"><i
+                                            class="bi bi-pie-chart me-2"></i>Assets</a></li>
+                                <li><a class="dropdown-item" href="bank-krw.html"><i class="bi bi-building me-2"></i>KRW
+                                        Bank Deposit</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="notifications.html"><i
+                                            class="bi bi-bell me-2"></i>Notifications & Activity</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="communicationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Communication</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="communicationDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Communication</a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="communicationDropdown">
-                                
-                                <li><a class="dropdown-item" href="notifications.html"><i class="bi bi-bell me-2"></i>Notifications</a></li>
-                                <li><a class="dropdown-item" href="support.html"><i class="bi bi-headset me-2"></i>Support(1:1)</a></li>
+
+                                <li><a class="dropdown-item" href="notifications.html"><i
+                                            class="bi bi-bell me-2"></i>Notifications</a></li>
+                                <li><a class="dropdown-item" href="support.html"><i
+                                            class="bi bi-headset me-2"></i>Support(1:1)</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -756,7 +767,8 @@
         <div class="page-header">
             <div>
                 <h1><i class="bi bi-bell"></i> Notifications & Activity</h1>
-                <p style="color: #9ca3af; margin-top: 8px;">Stay updated with your latest transactions and platform events</p>
+                <p style="color: #9ca3af; margin-top: 8px;">Stay updated with your latest transactions and platform
+                    events</p>
             </div>
             <div class="header-actions">
                 <button class="header-btn" onclick="markAllAsRead()">
@@ -795,22 +807,26 @@
         <!-- Tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications-content" type="button" role="tab">
+                <button class="nav-link active" id="notifications-tab" data-bs-toggle="tab"
+                    data-bs-target="#notifications-content" type="button" role="tab">
                     <i class="bi bi-bell me-2"></i>My Notifications
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity-content" type="button" role="tab">
+                <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity-content"
+                    type="button" role="tab">
                     <i class="bi bi-activity me-2"></i>All User Activity
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="timeline-tab" data-bs-toggle="tab" data-bs-target="#timeline-content" type="button" role="tab">
+                <button class="nav-link" id="timeline-tab" data-bs-toggle="tab" data-bs-target="#timeline-content"
+                    type="button" role="tab">
                     <i class="bi bi-calendar-event me-2"></i>Transaction Timeline
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages-content" type="button" role="tab">
+                <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages-content"
+                    type="button" role="tab">
                     <i class="bi bi-chat-dots me-2"></i>Admin Messages
                 </button>
             </li>
@@ -823,7 +839,8 @@
                 <!-- Filter -->
                 <div class="filter-section">
                     <div class="filter-row">
-                        <input type="text" class="form-control" id="notificationSearch" placeholder="Search notifications..." onkeyup="filterNotifications()">
+                        <input type="text" class="form-control" id="notificationSearch"
+                            placeholder="Search notifications..." onkeyup="filterNotifications()">
                         <select class="form-control" id="notificationType" onchange="filterNotifications()">
                             <option value="">All Types</option>
                             <option value="success">Success</option>
@@ -865,7 +882,8 @@
                                 <option value="medium">Medium (₩500K-₩1M)</option>
                                 <option value="low">Low (Less than ₩500K)</option>
                             </select>
-                            <input type="text" class="form-control" id="activitySearch" placeholder="Search username..." onkeyup="filterActivity()">
+                            <input type="text" class="form-control" id="activitySearch" placeholder="Search username..."
+                                onkeyup="filterActivity()">
                         </div>
                     </div>
 
@@ -934,12 +952,14 @@
                         </div>
                         <div class="col-md-12">
                             <label class="form-label">Message Content</label>
-                            <textarea class="form-control" id="msgContent" placeholder="Write your message..." rows="5" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 10px 14px; border-radius: 8px;"></textarea>
+                            <textarea class="form-control" id="msgContent" placeholder="Write your message..." rows="5"
+                                style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 10px 14px; border-radius: 8px;"></textarea>
                         </div>
                         <div class="col-md-12">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="msgPin" />
-                                <label class="form-check-label" for="msgPin" style="color: #d1d5db;">Pin to Top (Important)</label>
+                                <label class="form-check-label" for="msgPin" style="color: #d1d5db;">Pin to Top
+                                    (Important)</label>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -953,7 +973,8 @@
                 <!-- Messages Filter -->
                 <div class="filter-section">
                     <div class="filter-row">
-                        <input type="text" class="form-control" id="messageSearch" placeholder="Search messages..." onkeyup="filterMessages()">
+                        <input type="text" class="form-control" id="messageSearch" placeholder="Search messages..."
+                            onkeyup="filterMessages()">
                         <select class="form-control" id="messageType" onchange="filterMessages()">
                             <option value="">All Types</option>
                             <option value="info">Info</option>
@@ -972,62 +993,123 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer-dark pt-5 mt-5">
+    <!-- footer -->
+    <footer class="footer-dark pt-5">
         <div class="container">
+            <!-- Main Footer Content -->
             <div class="row g-4 pb-4">
+                <!-- Logo Column -->
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="d-flex align-items-center mb-3">
                         <span class="logo-icon me-2"><i class="fas fa-project-diagram"></i></span>
-                        <span class="logo-text">MyPortal</span>
+                        <span class="logo-text">Traders Connect</span>
                     </div>
                 </div>
+                <!-- About Column -->
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="footer-heading mb-3">About</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="footer-link">Features</a></li>
-                        <li class="mb-2"><a href="#" class="footer-link">FAQ</a></li>
-                        <li class="mb-2"><a href="#" class="footer-link">Pricing</a></li>
+                        <li class="mb-2"><a href="trade.html" class="footer-link">Features</a></li>
+                        <li class="mb-2"><a href="index.html#faqAccordion" class="footer-link">FAQ</a></li>
+                        <li class="mb-2"><a href="index.html" class="footer-link">Pricing</a></li>
+                        <li class="mb-2"><a href="wallet.html" class="footer-link">App</a></li>
+                        <li class="mb-2"><a href="index.html" class="footer-link">Affiliates</a></li>
                     </ul>
                 </div>
+
+                <!-- Company Column -->
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="footer-heading mb-3">Company</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="footer-link">Contact Us</a></li>
+                        <li class="mb-2"><a href="support.html" class="footer-link">Contact Us</a></li>
+                        <li class="mb-2"><a href="index.html" class="footer-link">Case Studies</a></li>
                         <li class="mb-2"><a href="#" class="footer-link">Terms</a></li>
                         <li class="mb-2"><a href="#" class="footer-link">Privacy</a></li>
                     </ul>
                 </div>
+
+                <!-- Resources Column -->
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="footer-heading mb-3">Resources</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="footer-link">Documentation</a></li>
-                        <li class="mb-2"><a href="#" class="footer-link">API</a></li>
-                        <li class="mb-2"><a href="#" class="footer-link">Status</a></li>
+                        <li class="mb-2"><a href="notifications.html" class="footer-link">Notifications</a></li>
+                        <li class="mb-2"><a href="bank-krw.html" class="footer-link">KRW Bank</a></li>
+                        <li class="mb-2"><a href="assets.html" class="footer-link">Assets</a></li>
+                        <li class="mb-2"><a href="login-signup.html" class="footer-link">Login/Signup</a></li>
+                        <li class="mb-2"><a href="index.html" class="footer-link">Status Page</a></li>
                     </ul>
                 </div>
+
+                <!-- Platform Status Column -->
                 <div class="col-lg-3 col-md-6 mb-4">
                     <h6 class="footer-heading mb-3">Platform Status</h6>
                     <div class="status-badge">
+                        <span class="status-dot"></span>
                         <span>All systems operational</span>
                     </div>
                 </div>
             </div>
+
+            <!-- Divider -->
             <hr class="footer-divider my-4">
+
+            <!-- Social Links & Copyright -->
             <div class="row align-items-center py-3">
                 <div class="col-md-6 mb-3 mb-md-0">
                     <div class="d-flex gap-3">
                         <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="d-flex flex-wrap justify-content-md-end gap-3 small">
-                        <span>Copyright @ 2028 TC Services LLC-FZ</span>
-                        <a href="#" class="footer-link">Terms</a>
-                        <a href="#" class="footer-link">Privacy</a>
+                        <span>Copyright @ 2028 Traders Connect Services LLC-FZ</span>
+                        <span>|</span>
+                        <span>Made in UK</span>
+                        <span>|</span>
+                        <a href="#" class="footer-link">Terms of Service</a>
+                        <span>|</span>
+                        <a href="#" class="footer-link">Privacy Policy</a>
                     </div>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <hr class="footer-divider my-4">
+
+            <!-- Disclaimers -->
+            <div class="row pb-4">
+                <div class="col-12">
+                    <p class="disclaimer-text mb-3">
+                        Futures and forex trading contains substantial risk and is not for every investor. An investor
+                        could
+                        potentially lose all or more than the initial investment. Risk capital is money that can be lost
+                        without
+                        jeopardizing ones financial security or life style. Only risk capital should be used for trading
+                        and only
+                        those with sufficient risk capital should consider trading. Past performance is not necessarily
+                        indicative
+                        of future results.
+                    </p>
+                    <p class="disclaimer-text mb-3">
+                        Testimonials appearing on this website may not be representative of other clients or customers
+                        and is not a
+                        guarantee of future performance or success.
+                    </p>
+                    <p class="disclaimer-text mb-0">
+                        <strong>Trademarks Disclaimer</strong><br>
+                        All product names, logos, brands, and trademarks are the property of their respective owners.
+                        All company,
+                        product, and service names used on this website are for identification purposes only. Use of
+                        these names,
+                        trademarks, and brands does not imply endorsement, affiliation, or sponsorship. Traders Connect
+                        is not
+                        affiliated with, endorsed by, or sponsored by any of the trademark holders mentioned unless
+                        specifically
+                        stated otherwise. All rights to third-party trademarks are respected and acknowledged.
+                    </p>
                 </div>
             </div>
         </div>
@@ -1112,7 +1194,7 @@
         // Render Notifications
         function renderNotifications(data) {
             const container = document.getElementById('notificationsList');
-            
+
             if (data.length === 0) {
                 container.innerHTML = '<div class="empty-state"><i class="bi bi-inbox"></i><p>No notifications</p></div>';
                 return;
@@ -1142,7 +1224,7 @@
         // Render Activities
         function renderActivities(data) {
             const container = document.getElementById('activityList');
-            
+
             if (data.length === 0) {
                 container.innerHTML = '<div class="empty-state"><i class="bi bi-graph-up"></i><p>No activity found</p></div>';
                 return;
@@ -1170,7 +1252,7 @@
         function renderTimeline() {
             const container = document.getElementById('timelineList');
             const type = document.getElementById('timelineType').value;
-            
+
             let filtered = timeline;
             if (type) {
                 filtered = timeline.filter(t => t.icon.includes(type));
@@ -1274,7 +1356,7 @@
             container.innerHTML = sorted.map(m => {
                 const badge = `<span class="message-badge badge-${m.category}">${m.category.charAt(0).toUpperCase() + m.category.slice(1)}</span>`;
                 const pinIcon = m.pinned ? '<i class="bi bi-pin-fill me-1" style="color: #f59e0b;"></i>' : '';
-                
+
                 return `
                     <div class="message-card ${m.read ? '' : 'unread'} ${m.category}">
                         <div class="message-header">
@@ -1373,7 +1455,7 @@
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             renderNotifications(notifications);
             renderActivities(activities);
             renderTimeline();
@@ -1387,27 +1469,27 @@
 
             // Dropdown hover functionality
             const dropdowns = document.querySelectorAll('.navbar-nav .dropdown');
-            
+
             dropdowns.forEach(dropdown => {
                 const toggle = dropdown.querySelector('.dropdown-toggle');
                 const menu = dropdown.querySelector('.dropdown-menu');
-                
+
                 // Prevent Bootstrap's default click behavior
                 if (toggle) {
-                    toggle.addEventListener('click', function(e) {
+                    toggle.addEventListener('click', function (e) {
                         e.preventDefault();
                     });
                 }
-                
-                dropdown.addEventListener('mouseenter', function() {
+
+                dropdown.addEventListener('mouseenter', function () {
                     if (toggle && menu) {
                         toggle.classList.add('show');
                         menu.classList.add('show');
                         menu.style.display = 'block';
                     }
                 });
-                
-                dropdown.addEventListener('mouseleave', function() {
+
+                dropdown.addEventListener('mouseleave', function () {
                     if (toggle && menu) {
                         toggle.classList.remove('show');
                         menu.classList.remove('show');
