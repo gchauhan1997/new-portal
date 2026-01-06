@@ -793,7 +793,7 @@ body {
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding: 100px 0 0;
+    
 }
 
 .hero-section::before {
@@ -1744,5 +1744,115 @@ body {
     .faq-item .accordion-body {
         padding: 0 20px 20px 20px;
         font-size: 0.95rem;
+    }
+}
+
+/* ===== Assets Page Styles ===== */
+/* Body padding for header offset */
+body {
+    padding-top: 80px;
+    color: #ffffff;
+}
+
+/* Assets page specific titles */
+.assets-page-title {
+    margin-bottom: 0;
+}
+
+.assets-page-subtitle {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+/* Balance label and amount */
+.balance-label {
+    font-size: 0.85rem;
+    color: #9ca3af;
+}
+
+.balance-amount {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+/* Table dark background and action button styles */
+.assets-table {
+    background: #07101a;
+    color: #ffffff;
+}
+
+.table-responsive-custom {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.assets-table thead th,
+.assets-table tbody td {
+    color: #ffffff;
+    background-color: #0f1419;
+    white-space: nowrap;
+}
+
+.assets-table thead th {
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.assets-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.assets-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.015);
+}
+
+/* Action buttons inside table (green background, white text) */
+.assets-table .action-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: none;
+}
+
+.assets-table .action-btn.me-1 {
+    margin-right: 6px;
+}
+
+/* Asset symbol and icon styles */
+.asset-name {
+    font-weight: 700;
+}
+
+.asset-full-name {
+    color: #9ca3af;
+    font-size: 0.8rem;
+}
+
+/* Asset icon background colors */
+.asset-icon-btc {
+    background: #f7931a;
+}
+
+.asset-icon-eth {
+    background: #627eea;
+}
+
+.asset-icon-usdt {
+    background: #10b981;
+}
+
+.asset-icon-bnb {
+    background: #f3ba2f;
+}
+
+/* Make table more compact on small screens */
+@media (max-width: 520px) {
+    .assets-table thead th {
+        font-size: 0.72rem;
+    }
+
+    .assets-table tbody td {
+        font-size: 0.78rem;
+        padding: 8px 6px;
     }
 }
