@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KRW Bank Deposit - MyPortal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            padding-top: 80px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0a0e1a 0%, #0f1419 100%);
+            min-height: 100vh;
+        }
+
+        /* Header Section */
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .page-header .subtitle {
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+
+        /* Tabs Navigation */
+        .nav-tabs {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #9ca3af;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 10px 0;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #10b981;
+            border-bottom-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #10b981;
+            border-bottom-color: #10b981;
+            background: transparent;
+        }
+
+        /* Tab Content */
+        .tab-pane {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form Card */
+        .form-card {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-card h3 {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        /* Form Groups */
+        .form-group-custom {
+            margin-bottom: 20px;
+        }
+
+        .form-group-custom label {
+            color: #d1d5db;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            background: rgba(248, 246, 246, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #10b981;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #6b7280;
+        }
+
+        /* Select Dropdown Styling */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2310b981' d='M1 4l5 5 5-5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+        }
+
+        select.form-control option {
+            background: #0a0e1a;
+            color: #ffffff;
+            padding: 10px;
+            border: none;
+        }
+
+        select.form-control option:checked {
+            background: linear-gradient(#10b981, #10b981);
+            color: #ffffff;
+        }
+
+        select.form-control option:hover {
+            background: rgba(16, 185, 129, 0.3);
+            color: #ffffff;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .info-box i {
+            color: #10b981;
+            margin-right: 10px;
+        }
+
+        /* Method Cards */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .method-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .method-card:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+        .method-card.active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #10b981;
+            color: #ffffff;
+        }
+
+        .method-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .method-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #d1d5db;
+        }
+
+        .method-card.active .method-label {
+            color: #ffffff;
+        }
+
+        /* Amount Summary */
+        .summary-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #d1d5db;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            color: #10b981;
+            font-size: 1.1rem;
+        }
+
+        /* Button */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            color: #ffffff;
+        }
+
+        /* Two Column Layout */
+        .layout-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 992px) {
+            .layout-two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Transaction History */
+        .transaction-history {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .transaction-history h3 {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        .transaction-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .transaction-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tx-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .tx-deposit {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .tx-withdraw {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .tx-details {
+            flex: 1;
+        }
+
+        .tx-type {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .tx-time {
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        .tx-amount {
+            text-align: right;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 4px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        /* Advanced Features Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            color: #10b981;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .stat-change {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-top: 8px;
+        }
+
+        /* Exchange Rate Section */
+        .exchange-section {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .exchange-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .exchange-header h5 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .refresh-btn {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(16, 185, 129, 0.3);
+        }
+
+        .exchange-rate {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .rate-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .rate-label {
+            color: #9ca3af;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+        }
+
+        .rate-value {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Beneficiary Management */
+        .beneficiary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .beneficiary-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .beneficiary-card:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+        .beneficiary-card.active {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+        }
+
+        .beneficiary-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #d1d5db;
+            margin-bottom: 4px;
+        }
+
+        .beneficiary-bank {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .add-beneficiary-btn {
+            background: rgba(16, 185, 129, 0.15);
+            border: 2px dashed rgba(16, 185, 129, 0.4);
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #10b981;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-beneficiary-btn:hover {
+            background: rgba(16, 185, 129, 0.25);
+            border-color: #10b981;
+        }
+
+        /* Fee Breakdown */
+        .fee-breakdown {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .fee-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+
+        .fee-item:last-child {
+            border-bottom: none;
+        }
+
+        .fee-label {
+            color: #9ca3af;
+        }
+
+        .fee-value {
+            color: #d1d5db;
+            font-weight: 600;
+        }
+
+        .fee-item.total {
+            font-weight: 700;
+            color: #10b981;
+            padding-top: 10px;
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Recurring Transfer */
+        .recurring-section {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .switch-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #10b981;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: #ffffff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            left: 24px;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .layout-two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-transparent" id="mainHeader">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="index.html">
+                    <div class="d-flex align-items-center">
+                        <span class="logo-icon me-2">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        </span>
+                        <span class="logo-text">MyPortal</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Nav Menu -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="trade.html">Trade</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="tradingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Finance</a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="tradingDropdown">
+                                <li><a class="dropdown-item" href="wallet.html"><i class="bi bi-wallet2 me-2"></i>Wallet</a></li>
+                                <li><a class="dropdown-item" href="assets.html"><i class="bi bi-pie-chart me-2"></i>Assets</a></li>
+                                <li><a class="dropdown-item" href="bank-krw.html"><i class="bi bi-building me-2"></i>KRW Bank Deposit</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="notifications.html"><i class="bi bi-bell me-2"></i>Notifications & Activity</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="communicationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Communication</a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="communicationDropdown">
+                                
+                                <li><a class="dropdown-item" href="notifications.html"><i class="bi bi-bell me-2"></i>Notifications</a></li>
+                                <li><a class="dropdown-item" href="support.html"><i class="bi bi-headset me-2"></i>Support(1:1)</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="support.html">Support</a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a href="login-signup.html" class="btn-login">Login</a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a href="login-signup.html" class="btn-signup">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- header -->
+
+    <main class="container deposit-withdraw-container py-4">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1><i class="bi bi-cash-coin"></i> KRW Bank Deposit</h1>
+            <p class="subtitle">Fast and secure Korean Won deposits and withdrawals</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="deposit-tab" data-bs-toggle="tab" data-bs-target="#deposit-content" type="button" role="tab">
+                    <i class="bi bi-arrow-down-circle me-2"></i>Deposit
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="withdraw-tab" data-bs-toggle="tab" data-bs-target="#withdraw-content" type="button" role="tab">
+                    <i class="bi bi-arrow-up-circle me-2"></i>Withdraw
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-content" type="button" role="tab">
+                    <i class="bi bi-clock-history me-2"></i>History
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- DEPOSIT TAB -->
+            <div class="tab-pane fade show active" id="deposit-content" role="tabpanel">
+                <!-- Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Deposits</div>
+                        <div class="stat-value">₩1,450K</div>
+                        <div class="stat-change">+12.5% this month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Avg. Fee</div>
+                        <div class="stat-value">₩2,450</div>
+                        <div class="stat-change">Per transaction</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Exchange Rate</div>
+                        <div class="stat-value">1,234</div>
+                        <div class="stat-change">KRW/USD</div>
+                    </div>
+                </div>
+
+                <!-- Exchange Rate Calculator -->
+                <div class="exchange-section">
+                    <div class="exchange-header">
+                        <h5><i class="bi bi-graph-up me-2"></i>Exchange Rate Converter</h5>
+                        <button class="refresh-btn" onclick="refreshExchangeRate()">
+                            <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+                        </button>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 8px; display: block;">
+                                Send (USD/BTC)
+                            </label>
+                            <input type="number" class="form-control" id="fromAmount" placeholder="0.00" step="0.01" onchange="convertCurrency()">
+                        </div>
+                        <div class="col-md-6">
+                            <label style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 8px; display: block;">
+                                Receive (KRW)
+                            </label>
+                            <input type="number" class="form-control" id="toAmount" placeholder="0.00" disabled>
+                        </div>
+                    </div>
+                    <div class="exchange-rate" style="margin-top: 15px;">
+                        <div class="rate-box">
+                            <div class="rate-label">Current Rate</div>
+                            <div class="rate-value" id="currentRate">1,234.56</div>
+                        </div>
+                        <div class="rate-box">
+                            <div class="rate-label">Fee %</div>
+                            <div class="rate-value">0.5%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layout-two-col">
+                    <!-- Deposit Form -->
+                    <div>
+                        <div class="form-card">
+                            <h3><i class="bi bi-arrow-down-circle me-2"></i>Deposit KRW</h3>
+
+                            <div class="info-box">
+                                <i class="bi bi-info-circle"></i>
+                                <span>Choose your deposit method to add funds to your account</span>
+                            </div>
+
+                            <!-- Saved Beneficiaries -->
+                            <div class="form-group-custom">
+                                <label><i class="bi bi-bookmark me-1"></i>Saved Bank Accounts</label>
+                                <div class="beneficiary-grid">
+                                    <div class="beneficiary-card active" onclick="selectBeneficiary(this, 'kb-1234')">
+                                        <div class="beneficiary-name">My KB</div>
+                                        <div class="beneficiary-bank">KB Bank</div>
+                                    </div>
+                                    <div class="beneficiary-card" onclick="selectBeneficiary(this, 'woori-5678')">
+                                        <div class="beneficiary-name">Work Account</div>
+                                        <div class="beneficiary-bank">Woori Bank</div>
+                                    </div>
+                                    <div class="add-beneficiary-btn" onclick="addNewBeneficiary()">
+                                        <i class="bi bi-plus"></i> Add
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Deposit Methods -->
+                            <div class="form-group-custom">
+                                <label>Select Deposit Method</label>
+                                <div class="method-grid">
+                                    <div class="method-card active" onclick="selectMethod(this, 'coin')">
+                                        <div class="method-icon"><i class="bi bi-coin"></i></div>
+                                        <div class="method-label">Coin</div>
+                                    </div>
+                                    <div class="method-card" onclick="selectMethod(this, 'bank')">
+                                        <div class="method-icon"><i class="bi bi-bank"></i></div>
+                                        <div class="method-label">Bank</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Coin Deposit Section -->
+                            <div id="coin-method">
+                                <div class="form-group-custom">
+                                    <label>Select Cryptocurrency</label>
+                                    <select class="form-control" id="coinSelect">
+                                        <option value="BTC">Bitcoin (BTC)</option>
+                                        <option value="ETH">Ethereum (ETH)</option>
+                                        <option value="USDT">Tether (USDT)</option>
+                                        <option value="BNB">Binance Coin (BNB)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label>Amount</label>
+                                    <input type="number" class="form-control" id="coinAmount" placeholder="Enter amount" step="0.01" onchange="updateFeeBreakdown()">
+                                </div>
+                            </div>
+
+                            <!-- Bank Deposit Section -->
+                            <div id="bank-method" style="display: none;">
+                                <div class="form-group-custom">
+                                    <label>Amount (KRW)</label>
+                                    <input type="number" class="form-control" id="bankAmount" placeholder="Enter amount" step="10000" min="50000" onchange="updateFeeBreakdown()">
+                                </div>
+
+                                <div class="form-group-custom">
+                                    <label>Your Bank Account</label>
+                                    <select class="form-control" id="bankAccount">
+                                        <option value="">Select bank account</option>
+                                        <option value="kb">KB Kookmin Bank - ****1234</option>
+                                        <option value="woori">Woori Bank - ****5678</option>
+                                        <option value="nh">NH Bank - ****9012</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Recurring Deposit -->
+                            <div class="recurring-section">
+                                <div class="switch-toggle" onclick="toggleRecurring(this)">
+                                    <span style="flex: 1;">
+                                        <i class="bi bi-arrow-repeat me-2"></i>Set as Recurring
+                                    </span>
+                                    <div class="toggle-switch"></div>
+                                </div>
+                                <div id="recurringOptions" style="display: none; margin-top: 15px;">
+                                    <div class="form-group-custom mb-3">
+                                        <label>Frequency</label>
+                                        <select class="form-control">
+                                            <option>Weekly</option>
+                                            <option>Bi-weekly</option>
+                                            <option>Monthly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fee Summary with Breakdown -->
+                            <div class="summary-box">
+                                <div class="summary-row">
+                                    <span>Amount:</span>
+                                    <span id="depositAmount">₩0</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Fee:</span>
+                                    <span id="depositFee">₩0</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>You Receive:</span>
+                                    <span id="depositTotal">₩0</span>
+                                </div>
+                                <div class="fee-breakdown">
+                                    <div class="fee-item">
+                                        <span class="fee-label">Processing Fee:</span>
+                                        <span class="fee-value" id="processingFee">₩0</span>
+                                    </div>
+                                    <div class="fee-item">
+                                        <span class="fee-label">Exchange Fee:</span>
+                                        <span class="fee-value" id="exchangeFee">₩0</span>
+                                    </div>
+                                    <div class="fee-item">
+                                        <span class="fee-label">Bank Fee:</span>
+                                        <span class="fee-value" id="bankFee">₩0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary-custom" onclick="processDeposit()">
+                                <i class="bi bi-check-circle me-2"></i>Confirm Deposit
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Deposit Info -->
+                    <div>
+                        <div class="form-card">
+                            <h3><i class="bi bi-info-circle me-2"></i>Deposit Details</h3>
+
+                            <div class="summary-box">
+                                <div class="summary-row">
+                                    <span>Min Deposit:</span>
+                                    <span>₩50,000</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Processing Time:</span>
+                                    <span>1-2 Hours</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Status:</span>
+                                    <span><span class="status-badge status-completed">Active</span></span>
+                                </div>
+                            </div>
+
+                            <div class="info-box" style="margin-top: 20px;">
+                                <i class="bi bi-shield-check"></i>
+                                <div>
+                                    <strong>Security:</strong><br>
+                                    All deposits are encrypted and protected. Your funds are safe.
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <div>
+                                    <strong>Important:</strong><br>
+                                    Deposits typically take 1-2 hours during business hours.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WITHDRAW TAB -->
+            <div class="tab-pane fade" id="withdraw-content" role="tabpanel">
+                <div class="layout-two-col">
+                    <!-- Withdraw Form -->
+                    <div>
+                        <div class="form-card">
+                            <h3><i class="bi bi-arrow-up-circle me-2"></i>Withdraw KRW</h3>
+
+                            <div class="info-box">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <span>You must complete identity verification before withdrawing</span>
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label>Amount (KRW)</label>
+                                <input type="number" class="form-control" id="withdrawAmount" placeholder="Enter amount" step="10000" min="100000">
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label>Recipient Bank</label>
+                                <select class="form-control" id="recipientBank">
+                                    <option value="">Select recipient bank</option>
+                                    <option value="kb">KB Kookmin Bank</option>
+                                    <option value="woori">Woori Bank</option>
+                                    <option value="nh">NH Bank</option>
+                                    <option value="shinhan">Shinhan Bank</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label>Account Number</label>
+                                <input type="text" class="form-control" id="accountNumber" placeholder="Enter account number">
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label>Account Holder Name</label>
+                                <input type="text" class="form-control" id="accountName" placeholder="Full name">
+                            </div>
+
+                            <!-- Fee Summary -->
+                            <div class="summary-box">
+                                <div class="summary-row">
+                                    <span>Amount:</span>
+                                    <span id="withdrawAmountDisplay">₩0</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Bank Fee:</span>
+                                    <span id="withdrawFee">₩5,000</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>You Receive:</span>
+                                    <span id="withdrawTotal">₩0</span>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary-custom" onclick="processWithdraw()">
+                                <i class="bi bi-check-circle me-2"></i>Confirm Withdrawal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Withdraw Info -->
+                    <div>
+                        <div class="form-card">
+                            <h3><i class="bi bi-info-circle me-2"></i>Withdrawal Details</h3>
+
+                            <div class="summary-box">
+                                <div class="summary-row">
+                                    <span>Available Balance:</span>
+                                    <span>₩1,250,000</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Min Withdrawal:</span>
+                                    <span>₩100,000</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Processing Time:</span>
+                                    <span>1-3 Days</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box" style="margin-top: 20px;">
+                                <i class="bi bi-clock"></i>
+                                <div>
+                                    <strong>Processing:</strong><br>
+                                    Withdrawals are processed 1-3 business days.
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <i class="bi bi-shield-check"></i>
+                                <div>
+                                    <strong>Verification:</strong><br>
+                                    Large withdrawals may require additional verification.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HISTORY TAB -->
+            <div class="tab-pane fade" id="history-content" role="tabpanel">
+                <div class="transaction-history">
+                    <h3><i class="bi bi-clock-history me-2"></i>Transaction History</h3>
+
+                    <!-- Advanced Filters -->
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <div class="form-group-custom mb-0">
+                                <label style="font-size: 0.85rem;">Search</label>
+                                <input type="text" class="form-control" id="searchInput" placeholder="Search transaction..." onkeyup="filterTransactions()">
+                            </div>
+                            <div class="form-group-custom mb-0">
+                                <label style="font-size: 0.85rem;">Type</label>
+                                <select class="form-control" id="filterType" onchange="filterTransactions()">
+                                    <option value="">All Types</option>
+                                    <option value="deposit">Deposit</option>
+                                    <option value="withdraw">Withdrawal</option>
+                                </select>
+                            </div>
+                            <div class="form-group-custom mb-0">
+                                <label style="font-size: 0.85rem;">Status</label>
+                                <select class="form-control" id="filterStatus" onchange="filterTransactions()">
+                                    <option value="">All Status</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                            </div>
+                            <div class="form-group-custom mb-0">
+                                <label style="font-size: 0.85rem;">Date Range</label>
+                                <select class="form-control" id="filterDate" onchange="filterTransactions()">
+                                    <option value="">All Time</option>
+                                    <option value="7days">Last 7 Days</option>
+                                    <option value="30days">Last 30 Days</option>
+                                    <option value="90days">Last 90 Days</option>
+                                </select>
+                            </div>
+                            <div class="form-group-custom mb-0" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-secondary-custom w-100" onclick="resetFilters()">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="transactionList">
+                        <div class="transaction-item">
+                            <div class="tx-icon tx-deposit"><i class="bi bi-arrow-down"></i></div>
+                            <div class="tx-details">
+                                <div class="tx-type">Bank Deposit</div>
+                                <div class="tx-time">Jan 5, 2026 - 2:30 PM</div>
+                            </div>
+                            <div>
+                                <div class="tx-amount">+₩500,000</div>
+                                <div><span class="status-badge status-completed">Completed</span></div>
+                            </div>
+                        </div>
+
+                        <div class="transaction-item">
+                            <div class="tx-icon tx-withdraw"><i class="bi bi-arrow-up"></i></div>
+                            <div class="tx-details">
+                                <div class="tx-type">Bank Withdrawal</div>
+                                <div class="tx-time">Jan 3, 2026 - 10:15 AM</div>
+                            </div>
+                            <div>
+                                <div class="tx-amount">-₩200,000</div>
+                                <div><span class="status-badge status-completed">Completed</span></div>
+                            </div>
+                        </div>
+
+                        <div class="transaction-item">
+                            <div class="tx-icon tx-deposit"><i class="bi bi-arrow-down"></i></div>
+                            <div class="tx-details">
+                                <div class="tx-type">Coin Deposit (BTC)</div>
+                                <div class="tx-time">Jan 2, 2026 - 5:45 PM</div>
+                            </div>
+                            <div>
+                                <div class="tx-amount">+₩300,000</div>
+                                <div><span class="status-badge status-pending">Pending</span></div>
+                            </div>
+                        </div>
+
+                        <div class="transaction-item">
+                            <div class="tx-icon tx-deposit"><i class="bi bi-arrow-down"></i></div>
+                            <div class="tx-details">
+                                <div class="tx-type">Bank Deposit</div>
+                                <div class="tx-time">Dec 31, 2025 - 8:20 AM</div>
+                            </div>
+                            <div>
+                                <div class="tx-amount">+₩650,000</div>
+                                <div><span class="status-badge status-completed">Completed</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-dark pt-5 mt-5">
+        <div class="container">
+            <div class="row g-4 pb-4">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="logo-icon me-2"><i class="fas fa-project-diagram"></i></span>
+                        <span class="logo-text">MyPortal</span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">About</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Features</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">FAQ</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Company</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Contact Us</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Terms</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Resources</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Documentation</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">API</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Status</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Platform Status</h6>
+                    <div class="status-badge">
+                        <span>All systems operational</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider my-4">
+            <div class="row align-items-center py-3">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="d-flex gap-3">
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex flex-wrap justify-content-md-end gap-3 small">
+                        <span>Copyright @ 2028 TC Services LLC-FZ</span>
+                        <a href="#" class="footer-link">Terms</a>
+                        <a href="#" class="footer-link">Privacy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Transaction Data
+        const allTransactions = [
+            { id: 1, type: 'deposit', amount: 500000, date: 'Jan 5, 2026', time: '2:30 PM', status: 'completed', method: 'Bank', description: 'Bank Deposit' },
+            { id: 2, type: 'withdraw', amount: 200000, date: 'Jan 3, 2026', time: '10:15 AM', status: 'completed', method: 'Bank', description: 'Bank Withdrawal' },
+            { id: 3, type: 'deposit', amount: 300000, date: 'Jan 2, 2026', time: '5:45 PM', status: 'pending', method: 'Coin', description: 'Coin Deposit (BTC)' },
+            { id: 4, type: 'deposit', amount: 650000, date: 'Dec 31, 2025', time: '8:20 AM', status: 'completed', method: 'Bank', description: 'Bank Deposit' },
+            { id: 5, type: 'withdraw', amount: 150000, date: 'Dec 28, 2025', time: '3:45 PM', status: 'completed', method: 'Bank', description: 'Bank Withdrawal' },
+        ];
+
+        // Exchange Rates
+        const exchangeRates = {
+            'BTC': 52000000,
+            'ETH': 3100000,
+            'USDT': 1280,
+            'USD': 1234
+        };
+
+        // Select Method
+        function selectMethod(element, method) {
+            document.querySelectorAll('.method-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+
+            document.getElementById('coin-method').style.display = 'none';
+            document.getElementById('bank-method').style.display = 'none';
+
+            document.getElementById(method + '-method').style.display = 'block';
+        }
+
+        // Select Beneficiary
+        function selectBeneficiary(element, id) {
+            document.querySelectorAll('.beneficiary-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Add New Beneficiary
+        function addNewBeneficiary() {
+            alert('Add new beneficiary form would open here');
+        }
+
+        // Toggle Recurring
+        function toggleRecurring(element) {
+            const toggle = element.querySelector('.toggle-switch');
+            const options = document.getElementById('recurringOptions');
+            
+            toggle.classList.toggle('active');
+            options.style.display = toggle.classList.contains('active') ? 'block' : 'none';
+        }
+
+        // Convert Currency
+        function convertCurrency() {
+            const from = document.getElementById('fromAmount').value || 0;
+            const rate = exchangeRates['USD'];
+            const to = parseFloat(from) * rate * 0.995; // 0.5% fee
+            document.getElementById('toAmount').value = to.toLocaleString('en-US', {maximumFractionDigits: 0});
+        }
+
+        // Refresh Exchange Rate
+        function refreshExchangeRate() {
+            const rates = [1234, 1235, 1236, 1237];
+            const newRate = rates[Math.floor(Math.random() * rates.length)];
+            document.getElementById('currentRate').textContent = newRate + '.56';
+            alert('Exchange rate updated!');
+        }
+
+        // Update Fee Breakdown
+        function updateFeeBreakdown() {
+            const amount = parseFloat(document.getElementById('bankAmount').value) || 0;
+            
+            if (amount > 0) {
+                const processingFee = Math.floor(amount * 0.002); // 0.2%
+                const exchangeFee = Math.floor(amount * 0.001); // 0.1%
+                const bankFee = 2500;
+                const totalFee = processingFee + exchangeFee + bankFee;
+                
+                document.getElementById('depositAmount').textContent = '₩' + amount.toLocaleString();
+                document.getElementById('depositFee').textContent = '₩' + totalFee.toLocaleString();
+                document.getElementById('depositTotal').textContent = '₩' + (amount - totalFee).toLocaleString();
+                
+                document.getElementById('processingFee').textContent = '₩' + processingFee.toLocaleString();
+                document.getElementById('exchangeFee').textContent = '₩' + exchangeFee.toLocaleString();
+                document.getElementById('bankFee').textContent = '₩' + bankFee.toLocaleString();
+            }
+        }
+
+        // Process Deposit
+        function processDeposit() {
+            const amount = document.getElementById('coinAmount').value || document.getElementById('bankAmount').value;
+            
+            if (!amount || parseFloat(amount) <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            alert('Deposit initiated! Transaction ID: TXN-' + Date.now());
+            document.getElementById('coinAmount').value = '';
+            document.getElementById('bankAmount').value = '';
+            updateFeeBreakdown();
+        }
+
+        // Process Withdraw
+        function processWithdraw() {
+            const amount = document.getElementById('withdrawAmount').value;
+            const bank = document.getElementById('recipientBank').value;
+            const account = document.getElementById('accountNumber').value;
+            const name = document.getElementById('accountName').value;
+
+            if (!amount || parseFloat(amount) < 100000) {
+                alert('Minimum withdrawal is ₩100,000');
+                return;
+            }
+            if (!bank || !account || !name) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            alert('Withdrawal initiated! Transaction ID: TXN-' + Date.now());
+            document.getElementById('withdrawAmount').value = '';
+            document.getElementById('accountNumber').value = '';
+            document.getElementById('accountName').value = '';
+        }
+
+        // Filter Transactions
+        function filterTransactions() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const type = document.getElementById('filterType').value;
+            const status = document.getElementById('filterStatus').value;
+            const dateRange = document.getElementById('filterDate').value;
+
+            let filtered = allTransactions.filter(tx => {
+                let matches = true;
+                
+                if (search && !tx.description.toLowerCase().includes(search)) matches = false;
+                if (type && tx.type !== type) matches = false;
+                if (status && tx.status !== status) matches = false;
+                
+                return matches;
+            });
+
+            renderTransactions(filtered);
+        }
+
+        // Render Transactions
+        function renderTransactions(transactions) {
+            const container = document.getElementById('transactionList');
+            
+            if (transactions.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #9ca3af;">No transactions found</div>';
+                return;
+            }
+
+            container.innerHTML = transactions.map(tx => `
+                <div class="transaction-item">
+                    <div class="tx-icon tx-${tx.type}"><i class="bi bi-arrow-${tx.type === 'deposit' ? 'down' : 'up'}"></i></div>
+                    <div class="tx-details">
+                        <div class="tx-type">${tx.description}</div>
+                        <div class="tx-time">${tx.date} - ${tx.time}</div>
+                    </div>
+                    <div>
+                        <div class="tx-amount">${tx.type === 'deposit' ? '+' : '-'}₩${tx.amount.toLocaleString()}</div>
+                        <div><span class="status-badge status-${tx.status}">${tx.status.charAt(0).toUpperCase() + tx.status.slice(1)}</span></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Reset Filters
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterDate').value = '';
+            renderTransactions(allTransactions);
+        }
+
+        // Calculate amounts
+        document.getElementById('coinAmount').addEventListener('input', function() {
+            const amount = parseFloat(this.value) || 0;
+            const fee = amount > 0 ? amount * 0.01 : 0;
+            document.getElementById('depositAmount').textContent = '₩' + Math.floor(amount * 50000).toLocaleString();
+            document.getElementById('depositFee').textContent = '₩' + Math.floor(fee * 50000).toLocaleString();
+            document.getElementById('depositTotal').textContent = '₩' + Math.floor((amount - fee) * 50000).toLocaleString();
+        });
+
+        document.getElementById('bankAmount').addEventListener('input', updateFeeBreakdown);
+
+        document.getElementById('withdrawAmount').addEventListener('input', function() {
+            const amount = parseFloat(this.value) || 0;
+            const fee = 5000;
+            document.getElementById('withdrawAmountDisplay').textContent = '₩' + amount.toLocaleString();
+            document.getElementById('withdrawTotal').textContent = '₩' + Math.max(0, amount - fee).toLocaleString();
+        });
+
+        // Load transactions on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTransactions(allTransactions);
+        });
+
+        // Dropdown hover functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.navbar-nav .dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                const menu = dropdown.querySelector('.dropdown-menu');
+                
+                // Prevent Bootstrap's default click behavior
+                if (toggle) {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                    });
+                }
+                
+                dropdown.addEventListener('mouseenter', function() {
+                    if (toggle && menu) {
+                        toggle.classList.add('show');
+                        menu.classList.add('show');
+                        menu.style.display = 'block';
+                    }
+                });
+                
+                dropdown.addEventListener('mouseleave', function() {
+                    if (toggle && menu) {
+                        toggle.classList.remove('show');
+                        menu.classList.remove('show');
+                        menu.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="assets/script/script.js"></script>
+</body>
+
+</html>

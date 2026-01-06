@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notifications & Activity - MyPortal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            padding-top: 80px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0a0e1a 0%, #0f1419 100%);
+            min-height: 100vh;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-btn {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .header-btn:hover {
+            background: rgba(16, 185, 129, 0.3);
+            border-color: #10b981;
+        }
+
+        /* Tabs */
+        .nav-tabs {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #9ca3af;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 10px 0;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #10b981;
+            border-bottom-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #10b981;
+            border-bottom-color: #10b981;
+            background: transparent;
+        }
+
+        /* Tab Pane */
+        .tab-pane {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Card Styles */
+        .card-container {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-container h3 {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        /* Notification Item */
+        .notification-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #10b981;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .notification-item:hover {
+            background: rgba(16, 185, 129, 0.1);
+            transform: translateX(4px);
+        }
+
+        .notification-item.unread {
+            background: rgba(16, 185, 129, 0.15);
+            border-left-color: #10b981;
+        }
+
+        .notification-item.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .notification-item.error {
+            border-left-color: #ef4444;
+        }
+
+        .notification-item.info {
+            border-left-color: #06b6d4;
+        }
+
+        .notification-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.3rem;
+        }
+
+        .notification-icon.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .notification-icon.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .notification-icon.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .notification-icon.info {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .notification-time {
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+
+        .notification-action {
+            display: flex;
+            gap: 8px;
+        }
+
+        .notification-btn {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .notification-btn:hover {
+            background: rgba(16, 185, 129, 0.3);
+        }
+
+        /* Activity Feed */
+        .activity-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item:hover {
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .activity-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-user {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .activity-action {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .activity-time {
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+
+        .activity-amount {
+            text-align: right;
+            font-weight: 700;
+        }
+
+        .activity-amount.deposit {
+            color: #10b981;
+        }
+
+        .activity-amount.withdraw {
+            color: #ef4444;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 1.8rem;
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #10b981;
+            color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2310b981' d='M1 4l5 5 5-5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 35px;
+        }
+
+        select.form-control option {
+            background: #0a0e1a;
+            color: #ffffff;
+        }
+
+        /* Badge */
+        .badge-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .badge-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .badge-info {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 25px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 80px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 8px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 3px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .timeline-time {
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .timeline-desc {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* Mark as Read Button */
+        .mark-read-btn {
+            background: transparent;
+            border: none;
+            color: #10b981;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .mark-read-btn:hover {
+            color: #06b6d4;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            font-size: 1.05rem;
+        }
+
+        /* Message Card Styles */
+        .message-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-card:hover {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+            transform: translateX(4px);
+        }
+
+        .message-card.unread {
+            border-left: 4px solid #10b981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.08) 100%);
+        }
+
+        .message-card.important {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .message-card.urgent {
+            border-left: 4px solid #ef4444;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .message-title {
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .message-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge-admin {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .badge-important {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .badge-urgent {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .badge-info {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .message-from {
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .message-from strong {
+            color: #10b981;
+        }
+
+        .message-content {
+            color: #d1d5db;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .message-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .message-time {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .msg-btn {
+            background: transparent;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .msg-btn:hover {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: rgba(16, 185, 129, 0.08);
+            border: 2px dashed rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .admin-panel h3 {
+            color: #10b981;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2310b981' d='M1 4l5 5 5-5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 35px;
+        }
+
+        .form-select option {
+            background: #0a0e1a;
+            color: #ffffff;
+        }
+
+        .form-label {
+            color: #d1d5db;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-send:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-actions {
+                margin-top: 15px;
+                width: 100%;
+            }
+
+            .header-btn {
+                flex: 1;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-transparent" id="mainHeader">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="index.html">
+                    <div class="d-flex align-items-center">
+                        <span class="logo-icon me-2">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        </span>
+                        <span class="logo-text">MyPortal</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Nav Menu -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="trade.html">Trade</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="tradingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Finance</a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="tradingDropdown">
+                                <li><a class="dropdown-item" href="wallet.html"><i class="bi bi-wallet2 me-2"></i>Wallet</a></li>
+                                <li><a class="dropdown-item" href="assets.html"><i class="bi bi-pie-chart me-2"></i>Assets</a></li>
+                                <li><a class="dropdown-item" href="bank-krw.html"><i class="bi bi-building me-2"></i>KRW Bank Deposit</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="notifications.html"><i class="bi bi-bell me-2"></i>Notifications & Activity</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="communicationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Communication</a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="communicationDropdown">
+                                
+                                <li><a class="dropdown-item" href="notifications.html"><i class="bi bi-bell me-2"></i>Notifications</a></li>
+                                <li><a class="dropdown-item" href="support.html"><i class="bi bi-headset me-2"></i>Support(1:1)</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="support.html">Support</a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a href="login-signup.html" class="btn-login">Login</a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a href="login-signup.html" class="btn-signup">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- header -->
+
+    <main class="container py-4">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1><i class="bi bi-bell"></i> Notifications & Activity</h1>
+                <p style="color: #9ca3af; margin-top: 8px;">Stay updated with your latest transactions and platform events</p>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="markAllAsRead()">
+                    <i class="bi bi-check-all me-2"></i>Mark All Read
+                </button>
+                <button class="header-btn" onclick="clearNotifications()">
+                    <i class="bi bi-trash me-2"></i>Clear All
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-icon"><i class="bi bi-bell-fill"></i></div>
+                <div class="stat-label">Unread Notifications</div>
+                <div class="stat-value" id="unreadCount">5</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon"><i class="bi bi-arrow-down-circle"></i></div>
+                <div class="stat-label">Today's Deposits</div>
+                <div class="stat-value">₩850K</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon"><i class="bi bi-arrow-up-circle"></i></div>
+                <div class="stat-label">Today's Withdrawals</div>
+                <div class="stat-value">₩425K</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+                <div class="stat-label">Active Users</div>
+                <div class="stat-value">2,847</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications-content" type="button" role="tab">
+                    <i class="bi bi-bell me-2"></i>My Notifications
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity-content" type="button" role="tab">
+                    <i class="bi bi-activity me-2"></i>All User Activity
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="timeline-tab" data-bs-toggle="tab" data-bs-target="#timeline-content" type="button" role="tab">
+                    <i class="bi bi-calendar-event me-2"></i>Transaction Timeline
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages-content" type="button" role="tab">
+                    <i class="bi bi-chat-dots me-2"></i>Admin Messages
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- NOTIFICATIONS TAB -->
+            <div class="tab-pane fade show active" id="notifications-content" role="tabpanel">
+                <!-- Filter -->
+                <div class="filter-section">
+                    <div class="filter-row">
+                        <input type="text" class="form-control" id="notificationSearch" placeholder="Search notifications..." onkeyup="filterNotifications()">
+                        <select class="form-control" id="notificationType" onchange="filterNotifications()">
+                            <option value="">All Types</option>
+                            <option value="success">Success</option>
+                            <option value="warning">Warning</option>
+                            <option value="error">Error</option>
+                            <option value="info">Info</option>
+                        </select>
+                        <select class="form-control" id="notificationStatus" onchange="filterNotifications()">
+                            <option value="">All Status</option>
+                            <option value="unread">Unread</option>
+                            <option value="read">Read</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Notifications List -->
+                <div id="notificationsList">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- ACTIVITY TAB -->
+            <div class="tab-pane fade" id="activity-content" role="tabpanel">
+                <div class="card-container">
+                    <h3><i class="bi bi-graph-up me-2"></i>Platform Activity</h3>
+
+                    <!-- Activity Filters -->
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <select class="form-control" id="activityType" onchange="filterActivity()">
+                                <option value="">All Types</option>
+                                <option value="deposit">Deposits</option>
+                                <option value="withdraw">Withdrawals</option>
+                                <option value="trade">Trades</option>
+                            </select>
+                            <select class="form-control" id="activityAmount" onchange="filterActivity()">
+                                <option value="">All Amounts</option>
+                                <option value="high">High (₩1M+)</option>
+                                <option value="medium">Medium (₩500K-₩1M)</option>
+                                <option value="low">Low (Less than ₩500K)</option>
+                            </select>
+                            <input type="text" class="form-control" id="activitySearch" placeholder="Search username..." onkeyup="filterActivity()">
+                        </div>
+                    </div>
+
+                    <!-- Activity Feed -->
+                    <div id="activityList">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TIMELINE TAB -->
+            <div class="tab-pane fade" id="timeline-content" role="tabpanel">
+                <div class="card-container">
+                    <h3><i class="bi bi-calendar-event me-2"></i>Transaction Timeline</h3>
+
+                    <!-- Timeline Filters -->
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <select class="form-control" id="timelineType" onchange="renderTimeline()">
+                                <option value="">All Transactions</option>
+                                <option value="deposit">Deposits Only</option>
+                                <option value="withdraw">Withdrawals Only</option>
+                            </select>
+                            <select class="form-control" id="timelinePeriod" onchange="renderTimeline()">
+                                <option value="today">Today</option>
+                                <option value="7days">Last 7 Days</option>
+                                <option value="30days">Last 30 Days</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="timeline" id="timelineList">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN MESSAGES TAB -->
+            <div class="tab-pane fade" id="messages-content" role="tabpanel">
+                <!-- Admin Panel (only for admins) -->
+                <div class="admin-panel" id="adminPanel" style="display: none;">
+                    <h3><i class="bi bi-pencil-square me-2"></i>Send Message to All Users</h3>
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Message Title</label>
+                            <input type="text" class="form-control" id="msgTitle" placeholder="Enter message title">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" id="msgCategory">
+                                <option value="info">Info</option>
+                                <option value="important">Important</option>
+                                <option value="urgent">Urgent</option>
+                                <option value="system">System Update</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Target Audience</label>
+                            <select class="form-select" id="msgAudience">
+                                <option value="all">All Users</option>
+                                <option value="verified">Verified Users Only</option>
+                                <option value="traders">Active Traders</option>
+                                <option value="premium">Premium Members</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Message Content</label>
+                            <textarea class="form-control" id="msgContent" placeholder="Write your message..." rows="5" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 10px 14px; border-radius: 8px;"></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="msgPin" />
+                                <label class="form-check-label" for="msgPin" style="color: #d1d5db;">Pin to Top (Important)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn-send" onclick="createMessage()">
+                                <i class="bi bi-send me-2"></i>Send Message
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messages Filter -->
+                <div class="filter-section">
+                    <div class="filter-row">
+                        <input type="text" class="form-control" id="messageSearch" placeholder="Search messages..." onkeyup="filterMessages()">
+                        <select class="form-control" id="messageType" onchange="filterMessages()">
+                            <option value="">All Types</option>
+                            <option value="info">Info</option>
+                            <option value="important">Important</option>
+                            <option value="urgent">Urgent</option>
+                            <option value="system">System</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Messages List -->
+                <div id="messagesList">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-dark pt-5 mt-5">
+        <div class="container">
+            <div class="row g-4 pb-4">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="logo-icon me-2"><i class="fas fa-project-diagram"></i></span>
+                        <span class="logo-text">MyPortal</span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">About</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Features</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">FAQ</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Company</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Contact Us</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Terms</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Resources</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Documentation</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">API</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Status</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="footer-heading mb-3">Platform Status</h6>
+                    <div class="status-badge">
+                        <span>All systems operational</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider my-4">
+            <div class="row align-items-center py-3">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="d-flex gap-3">
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex flex-wrap justify-content-md-end gap-3 small">
+                        <span>Copyright @ 2028 TC Services LLC-FZ</span>
+                        <a href="#" class="footer-link">Terms</a>
+                        <a href="#" class="footer-link">Privacy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mock Data
+        const notifications = [
+            { id: 1, type: 'success', title: 'Deposit Successful', message: 'Your deposit of ₩500,000 has been credited', time: '5 minutes ago', read: false },
+            { id: 2, type: 'warning', title: 'High Volume Transaction', message: 'You transferred ₩2,000,000. Please verify if this was you.', time: '1 hour ago', read: false },
+            { id: 3, type: 'success', title: 'Withdrawal Completed', message: 'Withdrawal of ₩300,000 is on its way to your account', time: '3 hours ago', read: false },
+            { id: 4, type: 'info', title: 'New Feature Available', message: 'Check out our new recurring deposit feature!', time: '1 day ago', read: false },
+            { id: 5, type: 'success', title: 'Security Update', message: 'Your account security has been verified', time: '2 days ago', read: true },
+            { id: 6, type: 'error', title: 'Failed Transaction', message: 'Transaction failed due to insufficient funds', time: '3 days ago', read: true },
+        ];
+
+        const activities = [
+            { user: 'John Doe', action: 'Deposited', amount: 2500000, type: 'deposit', time: '10 minutes ago' },
+            { user: 'Sarah Smith', action: 'Withdrawn', amount: 1500000, type: 'withdraw', time: '25 minutes ago' },
+            { user: 'Mike Johnson', action: 'Traded', amount: 5000000, type: 'trade', time: '1 hour ago' },
+            { user: 'Emma Williams', action: 'Deposited', amount: 800000, type: 'deposit', time: '2 hours ago' },
+            { user: 'David Brown', action: 'Withdrawn', amount: 1200000, type: 'withdraw', time: '3 hours ago' },
+            { user: 'Lisa Anderson', action: 'Deposited', amount: 3500000, type: 'deposit', time: '4 hours ago' },
+        ];
+
+        const timeline = [
+            { time: 'Jan 6, 2:30 PM', title: 'Deposit Processed', description: '₩500,000 from Bank Transfer', icon: 'check-circle' },
+            { time: 'Jan 6, 1:15 PM', title: 'Withdrawal Initiated', description: '₩300,000 to KB Kookmin Bank', icon: 'arrow-up-circle' },
+            { time: 'Jan 5, 10:45 AM', title: 'Trade Executed', description: 'BTC to KRW conversion completed', icon: 'arrow-repeat' },
+            { time: 'Jan 5, 9:20 AM', title: 'Deposit Received', description: '₩1,000,000 from Bank Transfer', icon: 'arrow-down-circle' },
+        ];
+
+        // Admin Messages Data
+        let messages = [
+            {
+                id: 1,
+                title: 'Platform Maintenance Scheduled',
+                content: 'We will be performing scheduled maintenance on January 7, 2026 from 2:00 AM to 4:00 AM UTC. During this time, the platform will be temporarily unavailable.',
+                category: 'system',
+                from: 'Admin Team',
+                date: '2026-01-06',
+                read: false,
+                pinned: true,
+                audience: 'all'
+            },
+            {
+                id: 2,
+                title: 'New Security Feature Released',
+                content: 'We have implemented a new two-factor authentication method for enhanced account security. Verify your email and enable 2FA in your account settings.',
+                category: 'important',
+                from: 'Security Team',
+                date: '2026-01-06',
+                read: false,
+                pinned: false,
+                audience: 'all'
+            },
+            {
+                id: 3,
+                title: 'Urgent: High Volume Trading Alert',
+                content: 'URGENT: We detected unusual trading patterns on your account. If this was not you, please change your password immediately and enable 2FA.',
+                category: 'urgent',
+                from: 'Security Alert',
+                date: '2026-01-05',
+                read: false,
+                pinned: true,
+                audience: 'all'
+            },
+            {
+                id: 4,
+                title: 'New Trading Pairs Available',
+                content: 'Exciting news! We have added 5 new cryptocurrency trading pairs to our platform: SOL/KRW, AVAX/KRW, PEPE/KRW, DOGE/KRW, and SHIB/KRW.',
+                category: 'info',
+                from: 'Trading Team',
+                date: '2026-01-05',
+                read: true,
+                pinned: false,
+                audience: 'all'
+            },
+        ];
+
+        // Render Notifications
+        function renderNotifications(data) {
+            const container = document.getElementById('notificationsList');
+            
+            if (data.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="bi bi-inbox"></i><p>No notifications</p></div>';
+                return;
+            }
+
+            container.innerHTML = data.map(n => `
+                <div class="notification-item ${n.read ? '' : 'unread'} ${n.type}">
+                    <div class="notification-icon ${n.type}">
+                        <i class="bi bi-${n.type === 'success' ? 'check-circle' : n.type === 'warning' ? 'exclamation-triangle' : n.type === 'error' ? 'x-circle' : 'info-circle'}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${n.title}</div>
+                        <div class="notification-message">${n.message}</div>
+                        <div class="notification-time">${n.time}</div>
+                    </div>
+                    <div class="notification-action">
+                        <button class="notification-btn" onclick="markAsRead(${n.id})">
+                            <i class="bi bi-check me-1"></i>Mark Read
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateUnreadCount();
+        }
+
+        // Render Activities
+        function renderActivities(data) {
+            const container = document.getElementById('activityList');
+            
+            if (data.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="bi bi-graph-up"></i><p>No activity found</p></div>';
+                return;
+            }
+
+            container.innerHTML = data.map(a => {
+                const avatar = a.user.split(' ').map(n => n[0]).join('');
+                return `
+                    <div class="activity-item">
+                        <div class="activity-avatar">${avatar}</div>
+                        <div class="activity-details" style="flex: 1;">
+                            <div class="activity-user">${a.user}</div>
+                            <div class="activity-action">${a.action} ${a.type === 'trade' ? 'cryptocurrency' : 'funds'}</div>
+                            <div class="activity-time">${a.time}</div>
+                        </div>
+                        <div class="activity-amount ${a.type}">
+                            ${a.type === 'deposit' ? '+' : '-'}₩${(a.amount / 1000000).toFixed(1)}M
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Timeline
+        function renderTimeline() {
+            const container = document.getElementById('timelineList');
+            const type = document.getElementById('timelineType').value;
+            
+            let filtered = timeline;
+            if (type) {
+                filtered = timeline.filter(t => t.icon.includes(type));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="bi bi-calendar"></i><p>No transactions in timeline</p></div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(t => `
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-time">${t.time}</div>
+                        <div class="timeline-title">${t.title}</div>
+                        <div class="timeline-desc">${t.description}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter Notifications
+        function filterNotifications() {
+            const search = document.getElementById('notificationSearch').value.toLowerCase();
+            const type = document.getElementById('notificationType').value;
+            const status = document.getElementById('notificationStatus').value;
+
+            let filtered = notifications.filter(n => {
+                let matches = true;
+                if (search && !n.title.toLowerCase().includes(search) && !n.message.toLowerCase().includes(search)) matches = false;
+                if (type && n.type !== type) matches = false;
+                if (status === 'unread' && n.read) matches = false;
+                if (status === 'read' && !n.read) matches = false;
+                return matches;
+            });
+
+            renderNotifications(filtered);
+        }
+
+        // Filter Activity
+        function filterActivity() {
+            const type = document.getElementById('activityType').value;
+            const amount = document.getElementById('activityAmount').value;
+            const search = document.getElementById('activitySearch').value.toLowerCase();
+
+            let filtered = activities.filter(a => {
+                let matches = true;
+                if (type && a.type !== type) matches = false;
+                if (search && !a.user.toLowerCase().includes(search)) matches = false;
+                if (amount === 'high' && a.amount < 1000000) matches = false;
+                if (amount === 'medium' && (a.amount < 500000 || a.amount >= 1000000)) matches = false;
+                if (amount === 'low' && a.amount >= 500000) matches = false;
+                return matches;
+            });
+
+            renderActivities(filtered);
+        }
+
+        // Mark as Read
+        function markAsRead(id) {
+            const notif = notifications.find(n => n.id === id);
+            if (notif) {
+                notif.read = true;
+                filterNotifications();
+            }
+        }
+
+        // Mark All as Read
+        function markAllAsRead() {
+            notifications.forEach(n => n.read = true);
+            filterNotifications();
+        }
+
+        // Clear All
+        function clearNotifications() {
+            notifications.length = 0;
+            filterNotifications();
+        }
+
+        // Update Unread Count
+        function updateUnreadCount() {
+            const unread = notifications.filter(n => !n.read).length;
+            document.getElementById('unreadCount').textContent = unread;
+        }
+
+        // Render Messages
+        function renderMessages(data) {
+            const container = document.getElementById('messagesList');
+
+            if (data.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="bi bi-chat-dots"></i><p>No messages found</p></div>';
+                return;
+            }
+
+            const sorted = data.sort((a, b) => {
+                if (a.pinned && !b.pinned) return -1;
+                if (!a.pinned && b.pinned) return 1;
+                return new Date(b.date) - new Date(a.date);
+            });
+
+            container.innerHTML = sorted.map(m => {
+                const badge = `<span class="message-badge badge-${m.category}">${m.category.charAt(0).toUpperCase() + m.category.slice(1)}</span>`;
+                const pinIcon = m.pinned ? '<i class="bi bi-pin-fill me-1" style="color: #f59e0b;"></i>' : '';
+                
+                return `
+                    <div class="message-card ${m.read ? '' : 'unread'} ${m.category}">
+                        <div class="message-header">
+                            <div>
+                                <div class="message-title">${pinIcon}${m.title}</div>
+                                ${badge}
+                            </div>
+                        </div>
+                        <div class="message-from">From: <strong>${m.from}</strong></div>
+                        <div class="message-content">${m.content}</div>
+                        <div class="message-footer">
+                            <div class="message-time">${formatMessageDate(m.date)}</div>
+                            <div class="message-actions">
+                                ${!m.read ? `<button class="msg-btn" onclick="markMessageAsRead(${m.id})"><i class="bi bi-check me-1"></i>Mark Read</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter Messages
+        function filterMessages() {
+            const search = document.getElementById('messageSearch').value.toLowerCase();
+            const type = document.getElementById('messageType').value;
+
+            let filtered = messages.filter(m => {
+                let matches = true;
+                if (search && !m.title.toLowerCase().includes(search) && !m.content.toLowerCase().includes(search)) matches = false;
+                if (type && m.category !== type) matches = false;
+                return matches;
+            });
+
+            renderMessages(filtered);
+        }
+
+        // Mark Message as Read
+        function markMessageAsRead(id) {
+            const msg = messages.find(m => m.id === id);
+            if (msg) {
+                msg.read = true;
+                filterMessages();
+            }
+        }
+
+        // Create Message (Admin)
+        function createMessage() {
+            const title = document.getElementById('msgTitle').value;
+            const content = document.getElementById('msgContent').value;
+            const category = document.getElementById('msgCategory').value;
+            const audience = document.getElementById('msgAudience').value;
+            const pinned = document.getElementById('msgPin').checked;
+
+            if (!title || !content) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const newMessage = {
+                id: Math.max(...messages.map(m => m.id), 0) + 1,
+                title: title,
+                content: content,
+                category: category,
+                from: 'Admin',
+                date: new Date().toISOString().split('T')[0],
+                read: false,
+                pinned: pinned,
+                audience: audience
+            };
+
+            messages.unshift(newMessage);
+            filterMessages();
+
+            // Clear form
+            document.getElementById('msgTitle').value = '';
+            document.getElementById('msgContent').value = '';
+            document.getElementById('msgPin').checked = false;
+
+            alert('Message sent to ' + audience + ' users successfully!');
+        }
+
+        // Format Message Date
+        function formatMessageDate(dateStr) {
+            const date = new Date(dateStr);
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            if (date.toDateString() === today.toDateString()) {
+                return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            } else if (date.toDateString() === yesterday.toDateString()) {
+                return 'Yesterday';
+            } else {
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined });
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderNotifications(notifications);
+            renderActivities(activities);
+            renderTimeline();
+            renderMessages(messages);
+
+            // Check if user is admin to show admin panel
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            if (isAdmin) {
+                document.getElementById('adminPanel').style.display = 'block';
+            }
+
+            // Dropdown hover functionality
+            const dropdowns = document.querySelectorAll('.navbar-nav .dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                const menu = dropdown.querySelector('.dropdown-menu');
+                
+                // Prevent Bootstrap's default click behavior
+                if (toggle) {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                    });
+                }
+                
+                dropdown.addEventListener('mouseenter', function() {
+                    if (toggle && menu) {
+                        toggle.classList.add('show');
+                        menu.classList.add('show');
+                        menu.style.display = 'block';
+                    }
+                });
+                
+                dropdown.addEventListener('mouseleave', function() {
+                    if (toggle && menu) {
+                        toggle.classList.remove('show');
+                        menu.classList.remove('show');
+                        menu.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="assets/script/script.js"></script>
+</body>
+
+</html>
