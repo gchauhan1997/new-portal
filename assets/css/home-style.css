@@ -312,7 +312,7 @@
 
             .hero-section {
                 text-align: center;
-                padding-top: 140px;
+                padding-top: 40px;
             }
 
             .stats-box {
@@ -326,8 +326,9 @@
             }
 
             .visual-container {
-                height: 450px;
+                height: 250px;
                 margin-top: 60px;
+                margin-bottom: 40px;
             }
 
             .main-art {

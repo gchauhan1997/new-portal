@@ -1321,9 +1321,7 @@ body {
    .hero-section {
         padding: 0;
    }
-   .hero-section .hero-content {
-        padding: 200px 15px;
-   }
+  
 }
 
 /* Stats Section */
@@ -1511,9 +1509,7 @@ body {
 }
 
 @media (max-width: 768px) {
-    .stats-section {
-        padding: 0;
-    }
+  
 
     .crypto-section {
         padding: 60px 0;
